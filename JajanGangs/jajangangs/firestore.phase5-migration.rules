@@ -1,0 +1,166 @@
+// TEMPORARY: publish only during Phase 5 migration. Restore firestore.rules afterward.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+    function validProfile() {
+      return request.resource.data.keys().hasOnly(['name', 'avatarId', 'createdAt', 'updatedAt'])
+        && request.resource.data.keys().hasAll(['name', 'avatarId', 'createdAt', 'updatedAt'])
+        && request.resource.data.avatarId is string
+        && request.resource.data.avatarId in ['cat', 'frog', 'robot', 'panda', 'fox', 'bunny', 'bear', 'alien', 'penguin', 'monster']
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 50
+        && request.resource.data.name.matches('.*[^ ].*')
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+    match /users/{uid} {
+      allow get: if owner(uid);
+      allow list, delete: if false;
+      allow create: if false;
+      allow update: if false;
+    }
+    function verified() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    function validEvent() {
+      let d = request.resource.data;
+      return d.keys().hasAll(['creatorId', 'creatorName', 'creatorAvatarId', 'visibility', 'craving', 'capacity', 'memberIds', 'memberCount', 'state', 'area', 'createdAt', 'updatedAt', 'durationMinutes'])
+        && d.keys().hasOnly(['creatorId', 'creatorName', 'creatorAvatarId', 'visibility', 'craving', 'capacity', 'memberIds', 'memberCount', 'state', 'area', 'createdAt', 'updatedAt', 'durationMinutes'])
+        && d.creatorId == request.auth.uid
+        && d.visibility == 'public'
+        && d.creatorName == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.name
+        && d.creatorAvatarId == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.avatarId
+        && d.craving in ['anything', 'fastFood', 'chicken', 'pizza', 'cafe', 'streetFood']
+        && d.capacity is int && d.capacity >= 2 && d.capacity <= 12
+        && d.memberIds is list && d.memberIds.size() == 1 && d.memberIds[0] == request.auth.uid
+        && d.memberCount == 1 && d.state == 'OPEN'
+        && d.durationMinutes == 45
+        && d.createdAt == request.time && d.updatedAt == request.time
+        && d.area is map
+        && d.area.keys().hasAll(['latCell', 'lngCell', 'radiusMeters'])
+        && d.area.keys().hasOnly(['latCell', 'lngCell', 'radiusMeters'])
+        && d.area.latCell is int && d.area.latCell >= -4250 && d.area.latCell <= 4250
+        && d.area.lngCell is int && d.area.lngCell >= -9000 && d.area.lngCell <= 9000
+        && d.area.radiusMeters is int && d.area.radiusMeters >= 2000 && d.area.radiusMeters <= 1000000;
+    }
+    function activeEvent(d) {
+      return d.state in ['OPEN', 'DECIDING', 'DESTINATION_SELECTED', 'ON_THE_WAY']
+        && request.time < d.createdAt + duration.value(d.durationMinutes, 'm');
+    }
+    function cancelledAfter(id) {
+      return getAfter(/databases/$(database)/documents/jajan_events/$(id)).data.creatorId == request.auth.uid
+        && getAfter(/databases/$(database)/documents/jajan_events/$(id)).data.state == 'CANCELLING';
+    }
+    match /active_jajan_slots/{uid} {
+      function shape(d) {
+        return d.keys().hasAll(['eventId', 'legacyEventIds', 'legacyUntil'])
+          && d.keys().hasOnly(['eventId', 'legacyEventIds', 'legacyUntil'])
+          && d.eventId is string && d.legacyEventIds is list && d.legacyUntil is timestamp;
+      }
+      function newEvent(d) {
+        return d.eventId.size() > 0
+          && getAfter(/databases/$(database)/documents/jajan_events/$(d.eventId)).data.creatorId == uid
+          && getAfter(/databases/$(database)/documents/jajan_events/$(d.eventId)).data.createdAt == request.time;
+      }
+      function previousFree() {
+        return resource.data.eventId == ''
+          || !exists(/databases/$(database)/documents/jajan_events/$(resource.data.eventId))
+          || !activeEvent(get(/databases/$(database)/documents/jajan_events/$(resource.data.eventId)).data);
+      }
+      function startNext(d) {
+        return previousFree() && resource.data.legacyUntil <= request.time
+          && d.legacyEventIds == resource.data.legacyEventIds
+          && d.legacyUntil == resource.data.legacyUntil && newEvent(d);
+      }
+      function release(d) {
+        let old = resource.data;
+        let removed = old.legacyEventIds.removeAll(d.legacyEventIds);
+        return (old.eventId != '' && d.eventId == ''
+            && d.legacyEventIds == old.legacyEventIds && d.legacyUntil == old.legacyUntil
+            && cancelledAfter(old.eventId))
+          || (d.eventId == old.eventId && removed.size() == 1
+            && d.legacyEventIds == old.legacyEventIds.removeAll(removed)
+            && d.legacyUntil == (d.legacyEventIds.size() == 0 ? timestamp.date(1970, 1, 1) : old.legacyUntil)
+            && cancelledAfter(removed[0]));
+      }
+      allow get: if owner(uid);
+      allow list, delete: if false;
+      allow create: if false;
+      allow update: if false;
+    }
+    match /jajan_events/{eventId} {
+      function host() { return verified() && resource.data.creatorId == request.auth.uid; }
+      function slotReleased() {
+        return !exists(/databases/$(database)/documents/active_jajan_slots/$(request.auth.uid))
+          || (getAfter(/databases/$(database)/documents/active_jajan_slots/$(request.auth.uid)).data.eventId != eventId
+            && !(eventId in getAfter(/databases/$(database)/documents/active_jajan_slots/$(request.auth.uid)).data.legacyEventIds));
+      }
+      function acceptMember() {
+        let before = resource.data;
+        let after = request.resource.data;
+        let uid = after.lastAcceptedUid;
+        let prior = get(/databases/$(database)/documents/jajan_events/$(eventId)/join_requests/$(uid)).data;
+        let decided = getAfter(/databases/$(database)/documents/jajan_events/$(eventId)/join_requests/$(uid)).data;
+        return activeEvent(before) && before.state == 'OPEN'
+          && after.diff(before).affectedKeys().hasOnly(['memberIds', 'memberCount', 'lastAcceptedUid', 'updatedAt'])
+          && uid is string && !(uid in before.memberIds)
+          && after.memberIds == before.memberIds.concat([uid])
+          && after.memberCount == before.memberCount + 1
+          && after.memberCount == after.memberIds.size() && after.memberCount <= before.capacity
+          && after.updatedAt == request.time
+          && prior.status in ['REQUESTED', 'PENDING']
+          && decided.status == 'ACCEPTED' && decided.decidedAt == request.time;
+      }
+      allow get: if verified() && (!exists(/databases/$(database)/documents/jajan_events/$(eventId))
+        || resource.data.creatorId == request.auth.uid
+        || resource.data.get('visibility', 'private') == 'public');
+      allow list: if verified() && request.query.limit <= 20
+        && (resource.data.creatorId == request.auth.uid
+          || (resource.data.get('visibility', 'private') == 'public' && resource.data.state == 'OPEN'));
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+
+      match /join_requests/{uid} {
+        function event() { return get(/databases/$(database)/documents/jajan_events/$(eventId)).data; }
+        function requestHost() { return verified() && event().creatorId == request.auth.uid; }
+        function validRequest() {
+          let d = request.resource.data;
+          let e = event();
+          let p = get(/databases/$(database)/documents/users/$(uid)).data;
+          return d.keys().hasAll(['userId', 'name', 'avatarId', 'status', 'createdAt'])
+            && d.keys().hasOnly(['userId', 'name', 'avatarId', 'status', 'createdAt'])
+            && d.userId == uid && d.name == p.name && d.avatarId == p.avatarId
+            && d.status == 'REQUESTED' && d.createdAt == request.time
+            && e.get('visibility', 'private') == 'public'
+            && e.state == 'OPEN' && activeEvent(e)
+            && e.creatorId != uid && !(uid in e.memberIds) && e.memberCount < e.capacity;
+        }
+        function validDecision() {
+          let e = event();
+          let after = getAfter(/databases/$(database)/documents/jajan_events/$(eventId)).data;
+          let d = request.resource.data;
+          return e.state == 'OPEN' && activeEvent(e)
+            && resource.data.status in ['REQUESTED', 'PENDING']
+            && d.diff(resource.data).affectedKeys().hasOnly(['status', 'decidedAt'])
+            && d.decidedAt == request.time
+            && ((d.status == 'REJECTED') || (d.status == 'ACCEPTED'
+              && !(uid in e.memberIds) && after.lastAcceptedUid == uid
+              && after.memberIds == e.memberIds.concat([uid])
+              && after.memberCount == e.memberCount + 1 && after.memberCount <= e.capacity));
+        }
+        allow get: if owner(uid) || requestHost();
+        allow list: if requestHost();
+        allow create: if false;
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

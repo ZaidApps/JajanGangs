@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "name": "Jajan Gangs — Teal Arcade",
+  "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+  "sources": {"streets": {"type": "vector", "url": "mapbox://mapbox.mapbox-streets-v8"}},
+  "layers": [
+    {"id":"jg-background","type":"background","paint":{"background-color":"#173f47"}},
+    {"id":"jg-parks","type":"fill","source":"streets","source-layer":"landuse","paint":{"fill-color":"#276958","fill-opacity":0.75}},
+    {"id":"jg-water","type":"fill","source":"streets","source-layer":"water","paint":{"fill-color":"#126887"}},
+    {"id":"jg-road-outline","type":"line","source":"streets","source-layer":"road","paint":{"line-color":"#102d3c","line-width":["interpolate",["linear"],["zoom"],10,2,16,15]}},
+    {"id":"jg-roads","type":"line","source":"streets","source-layer":"road","paint":{"line-color":["match",["get","class"],["motorway","trunk","primary"],"#dfb95f","#608c87"],"line-width":["interpolate",["linear"],["zoom"],10,0.8,16,8]}},
+    {"id":"jg-buildings","type":"fill-extrusion","source":"streets","source-layer":"building","minzoom":13,"paint":{"fill-extrusion-color":"#428a87","fill-extrusion-height":["coalesce",["get","height"],8],"fill-extrusion-base":0,"fill-extrusion-opacity":0.85}},
+    {"id":"jg-place-labels","type":"symbol","source":"streets","source-layer":"place_label","layout":{"text-field":["coalesce",["get","name_en"],["get","name"]],"text-font":["DIN Pro Medium","Arial Unicode MS Regular"],"text-size":["interpolate",["linear"],["zoom"],9,11,15,14],"text-max-width":8},"paint":{"text-color":"#e2f4df","text-halo-color":"#153944","text-halo-width":1.5}}
+  ]
+}

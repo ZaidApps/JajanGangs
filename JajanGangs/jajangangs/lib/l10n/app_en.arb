@@ -1,0 +1,578 @@
+{
+  "@@locale": "en",
+  "tagline": "Good food. Better company.",
+  "hungry": "I'm Hungry!",
+  "letsJajan": "Let's Jajan!",
+  "login": "Log In",
+  "back": "Back",
+  "loading": "Loading",
+  "restoring": "Restoring your session",
+  "adventureBadge": "YOUR FOOD ADVENTURE STARTS HERE",
+  "nameLabel": "Your name",
+  "nameHint": "What should we call you?",
+  "emailLabel": "Email address",
+  "emailHint": "you@example.com",
+  "passwordLabel": "Password",
+  "passwordHint": "At least 8 characters",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "loginTitle": "Your gang is waiting.",
+  "registerTitle": "Join the food adventure.",
+  "resetTitle": "Forgot your password?",
+  "verifyTitle": "Check your inbox.",
+  "profileTitle": "Hey, new gang member!",
+  "loadingProfile": "Finding your place...",
+  "retryTitle": "Let's try that again.",
+  "welcomeTitle": "Welcome to Jajan Gangs",
+  "loginSubtitle": "Log in and make your next meal an adventure.",
+  "registerSubtitle": "One account. Plenty of good food and great company.",
+  "resetSubtitle": "We'll send you a link to choose a new password.",
+  "profileSubtitle": "Your name and a character. Make yourself at home.",
+  "loadingProfileSubtitle": "Getting your gang profile ready.",
+  "profileErrorSubtitle": "You are signed in. We just need to load your profile.",
+  "completeSubtitle": "Your account is ready. Food discovery is coming next.",
+  "readyBadge": "READY FOR YOUR NEXT BITE",
+  "companyBadge": "GOOD FOOD STARTS WITH GOOD COMPANY",
+  "google": "Continue with Google",
+  "emailDivider": "or with email",
+  "forgotPassword": "Forgot password?",
+  "createAccount": "Create account",
+  "continueLabel": "Continue",
+  "sendReset": "Send reset link",
+  "newAccount": "New here? Create an account",
+  "existingAccount": "Already have an account? Log in",
+  "verifiedAction": "I've verified my email",
+  "resendVerification": "Resend verification email",
+  "retry": "Retry",
+  "profileSaved": "Profile saved. You are all set for the next chapter!",
+  "signOut": "Sign out",
+  "foodie": "foodie",
+  "yourEmail": "your email",
+  "emailRequired": "Enter your email address.",
+  "emailInvalid": "Enter a valid email address.",
+  "passwordRequired": "Enter your password.",
+  "passwordShort": "Use at least 8 characters.",
+  "passwordLong": "This password is too long.",
+  "nameRequired": "Tell us what to call you.",
+  "nameLong": "Keep your name to 50 characters or fewer.",
+  "nameInvalid": "Enter a valid name.",
+  "genericError": "Something went wrong. Please try again.",
+  "verificationSent": "Verification link sent. Check your inbox and spam folder.",
+  "notVerified": "Not verified yet. Open the link in your email, then check again.",
+  "resetSent": "If an account exists for this email, a password reset link is on its way. Check your spam folder too.",
+  "timeoutError": "This is taking too long. Check your connection and try again.",
+  "googleSetup": "Google sign-in setup is incomplete. Please use email for now.",
+  "googleCancelled": "Google sign-in was cancelled.",
+  "googleUnavailable": "Google sign-in is unavailable. Try again or use email.",
+  "wrongCredentials": "The email or password is incorrect. Try again or reset your password.",
+  "emailInUse": "This email already has an account. Log in or reset your password.",
+  "weakPassword": "Choose a stronger password that meets the account password requirements.",
+  "networkError": "Check your internet connection and try again.",
+  "tooManyRequests": "Too many attempts. Please wait a little before trying again.",
+  "accountDisabled": "This account is disabled. Contact support for help.",
+  "providerDisabled": "This sign-in method has not been enabled yet. Please contact support.",
+  "registrationNotConfigured": "Account registration is not configured yet. Please contact support.",
+  "appUnauthorized": "This app is not authorized to sign in. Please contact support.",
+  "credentialConflict": "An account already exists with another sign-in method. Use your original method.",
+  "profileDenied": "Your profile could not be accessed. Please try again later.",
+  "popupBlocked": "Allow the Google sign-in popup in your browser, then try again.",
+  "domainUnauthorized": "Sign-in is not enabled for this browser address yet.",
+  "sessionExpired": "Your session has expired. Please sign out and sign in again.",
+  "signInConnection": "Sign-in could not connect. Please try again.",
+  "webNotConfigured": "Browser sign-in is not configured yet. Please use the Android app.",
+  "platformUnsupported": "Please use Android, iOS, or the configured browser app to sign in.",
+  "googleTokenError": "Google could not verify this account. Please try again.",
+  "signInAgain": "Please sign in again.",
+  "mapSlogan": "Hungry? Let's jajan together!",
+  "mapLoading": "Loading map...",
+  "mapError": "The map could not load. Check your connection and try again.",
+  "preparingApp": "Getting Jajan Gangs ready...",
+  "previewIntro": "Find your next food adventure with your gang.",
+  "browserPreview": "Browser preview",
+  "previewDetails": "The app foundation is ready for mobile testing. Firebase and the live Mapbox map are available in the Android/iOS build. This preview does not connect to either service.",
+  "mobileOnly": "Run Jajan Gangs on Android or iOS.",
+  "mapTokenMissing": "Provide a public Mapbox token using --dart-define-from-file=config/local.json.",
+  "startupError": "Jajan Gangs could not start. Please try again.",
+  "language": "Language",
+  "languageSaveError": "Language changed, but could not be saved. Please select it again to retry.",
+  "completeTitle": "You're in, {name}!",
+  "@completeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "verifySubtitle": "Verify {email} before joining the gang.",
+  "@verifySubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "resendCountdown": "Resend in {seconds}s",
+  "@resendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInFailed": "Sign-in failed ({code}). Please try again.",
+  "@signInFailed": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "homeTagline": "Your next bite starts here.",
+  "homeProfile": "Profile",
+  "homeGang": "Gang",
+  "homeCreate": "Create Jajan",
+  "homeNearby": "Who's hungry nearby?",
+  "homeDemo": "DEMO EVENTS",
+  "homeDemoDetails": "Local examples only. No real people or live events are shown.",
+  "homeComingSoon": "This page is coming next. For now, explore the map and sample Jajan events.",
+  "homeBackMap": "Back to the map",
+  "homePrivacy": "Your area, not your address.",
+  "homePrivacyDetails": "We use rounded areas to find nearby Jajans. Exact coordinates stay on your device. Events share only a broad area.",
+  "homeLocate": "Find my area",
+  "homeSettings": "Open device settings",
+  "homeRecenter": "Recenter map",
+  "homeJakarta": "Map preview · location unavailable",
+  "homeApproximate": "Your approximate area",
+  "homeMapSetup": "The map needs a Mapbox token. Start the app with --dart-define-from-file=config/local.json.",
+  "locationFinding": "Finding your area…",
+  "locationOff": "Location services are off. Turn on Location in device settings, then retry.",
+  "locationBlocked": "Location permission is blocked. Allow location for Jajan Gangs in app settings. Approximate location is enough.",
+  "locationDenied": "Location permission was declined. Tap Find my area to try again, or allow it in app settings.",
+  "locationUnavailable": "Your device could not provide a location. Check location access and connectivity, then retry.",
+  "locationApproximate": "Only your approximate area is displayed. Your exact position stays private.",
+  "demoNoodles": "Noodle squad",
+  "demoCoffee": "Coffee break",
+  "demoSatay": "Satay tonight",
+  "demoBurger": "Burger buddies",
+  "homeDistance": "About {distance} km from area center",
+  "homeMembers": "Demo · {members}/{capacity} members",
+  "@homeDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "@homeMembers": {
+    "placeholders": {
+      "members": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      }
+    }
+  },
+  "avatarChoose": "Pick your character",
+  "avatarHint": "Choose one of these 10 little weirdos to represent you.",
+  "avatarRequired": "Choose a character to continue.",
+  "avatarCat": "Wink Cat",
+  "avatarFrog": "Snack Frog",
+  "avatarRobot": "Beep Bot",
+  "avatarPanda": "Panda Pal",
+  "avatarFox": "Cheeky Fox",
+  "avatarBunny": "Bouncy Bunny",
+  "avatarBear": "Honey Bear",
+  "avatarAlien": "Little Alien",
+  "avatarPenguin": "Chilly Penguin",
+  "avatarMonster": "Munch Monster",
+  "cravingAnything": "Anything",
+  "cravingFastFood": "Fast Food",
+  "cravingChicken": "Chicken",
+  "cravingPizza": "Pizza",
+  "cravingCafe": "Cafe",
+  "cravingStreetFood": "Street Food",
+  "jajanCreateIntro": "A craving, a few friends, and a little adventure.",
+  "jajanCravingQuestion": "What are you craving?",
+  "jajanPeopleQuestion": "How many people?",
+  "jajanIncludesCreator": "Total gang size, including you.",
+  "jajanFivePlus": "5+",
+  "jajanFewer": "Fewer people",
+  "jajanMore": "More people",
+  "jajanExpiryHint": "Starts OPEN and expires 45 minutes after creation.",
+  "jajanLocationRequired": "Get your approximate area before creating a Jajan. We will not publish an event at the Jakarta preview location.",
+  "jajanApproximateShare": "Only your rounded area is saved with this event. Your exact position is never shared.",
+  "jajanCapacityInvalid": "Choose a gang size between 2 and 12 people.",
+  "jajanPending": "A creation request is pending. Retry to confirm the same event without creating a duplicate. Your original choices are kept.",
+  "jajanRetryCreate": "Confirm / retry creation",
+  "jajanDraftError": "We could not restore or save your creation request. Please retry before continuing.",
+  "jajanSaveError": "Your Jajan could not be confirmed. Please retry; the same request will be reused.",
+  "jajanPermission": "Event creation is not available yet. Please contact support or try again after setup is completed.",
+  "jajanRetrySafe": "The connection was interrupted. Retry to check the same event; you will not create a duplicate.",
+  "jajanLoadError": "Your saved events could not load. Tap to retry.",
+  "jajanCreated": "Jajan created! Your gang is OPEN.",
+  "jajanRecoveredExpired": "This earlier Jajan was saved, but has already expired. You can create a new one.",
+  "jajanOpen": "OPEN · YOUR JAJAN",
+  "jajanOwnEvent": "Your saved Jajan. Expires after 45 minutes. Joining and public discovery are coming next.",
+  "jajanExactCapacity": "Total: {count} people (up to 12)",
+  "jajanMemberCount": "{members}/{capacity} members",
+  "@jajanExactCapacity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@jajanMemberCount": {
+    "placeholders": {
+      "members": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      }
+    }
+  },
+  "locationTimeout": "Your device did not return a location in time. Check Location and Wi-Fi or mobile data, then retry.",
+  "jajanLocationOff": "Turn on location services in device settings, then tap Create Jajan again. Your choices are saved on this form.",
+  "jajanLocationBlocked": "Allow location access for Jajan Gangs in device settings, then tap Create Jajan again. Approximate location is enough.",
+  "jajanLocationDenied": "We need your approximate area to create a Jajan. Tap Create Jajan again and allow location access when asked.",
+  "jajanLocationTimeout": "Finding your area took too long. Check that location services are on, then tap Create Jajan to try again.",
+  "jajanLocationUnavailable": "We could not find your area. Check location access and your connection, then tap Create Jajan again.",
+  "jajanCreating": "Creating your Jajan…",
+  "jajanSettingsUnavailable": "Open your device settings manually and check location services and location permission for Jajan Gangs. Then return and tap Create Jajan again.",
+  "eventDetails": "Jajan Details",
+  "eventYourJajan": "Your Jajan",
+  "eventIntro": "Good food tastes better with a gang.",
+  "eventHost": "Gang host",
+  "eventJoin": "JOIN JAJAN",
+  "eventRequestSent": "Request sent",
+  "eventRequestExplanation": "Your request is pending. You will join the gang once the host accepts it.",
+  "eventRequestPending": "Waiting for the host",
+  "eventViewRequests": "View Requests",
+  "eventRequestsNote": "People who asked to join your gang. Refresh to see new requests.",
+  "eventNoRequests": "No requests yet. Your next foodie friend could arrive soon!",
+  "eventLoadMore": "Load more",
+  "eventRefresh": "Refresh",
+  "eventExpired": "This Jajan has expired",
+  "eventClosed": "This Jajan is no longer accepting requests.",
+  "eventFull": "This gang is full",
+  "eventAlreadyMember": "You are in this gang",
+  "eventAreaPrivacy": "Distance is estimated between rounded areas. Exact locations are never shared.",
+  "eventSameArea": "In your approximate area",
+  "eventDistanceUnavailable": "Your approximate area is not available yet.",
+  "eventOffline": "Waiting for a connection to confirm this event. Joining is available once it is confirmed.",
+  "eventUnavailable": "This Jajan is no longer available. It may have been cancelled.",
+  "eventLoadError": "We could not load the event or your request. Check your connection and try again.",
+  "eventRequestsError": "We could not load the requests. Refresh to try again.",
+  "eventJoinError": "We could not confirm your request. Check your connection and retry. If the event is full or expired, joining is no longer available. Retrying will not create a duplicate request.",
+  "eventTapDetails": "Open details to see the host and join this Jajan.",
+  "jajanDiscoveryError": "Nearby events could not be loaded. Tap to retry.",
+  "eventPublicHint": "Your name, character and approximate area will be visible to signed-in foodies.",
+  "eventOwnerHungry": "{name} is hungry!",
+  "@eventOwnerHungry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTimeLeft": "Expires in {minutes}:{seconds}",
+  "@eventTimeLeft": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "eventRequestCount": "{count, plural, =0{No pending requests} =1{1 pending request} other{{count} pending requests}}",
+  "@eventRequestCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "locationNeeded": "Allow approximate location to find nearby Jajans and show distance.",
+  "locationSettingsUnavailable": "Open device settings manually and check Location and the location permission for Jajan Gangs. Return here and tap Find my area.",
+  "locationFixOnMap": "Back to map to find my area",
+  "homeFindingEvents": "Looking for your next gang…",
+  "homeNoEvents": "No active Jajans nearby yet",
+  "homeNoEventsHint": "Start a Jajan and invite others to join, or refresh to look again.",
+  "homeAreaNeeded": "Find your area to discover Jajans",
+  "homeAreaNeededHint": "You can still create a Jajan. We will ask for location when you submit.",
+  "homeEventsUnavailable": "Could not load Jajans",
+  "homeEventsUnavailableHint": "Check your connection and refresh. You can still start your own Jajan.",
+  "jajanAlreadyActive": "You already have an active Jajan. Complete or cancel it, or wait for it to expire before creating another.",
+  "jajanActiveCheckFailed": "We could not check whether you have an active Jajan. Check your connection and try again.",
+  "jajanCheckingActive": "Checking your Jajan…",
+  "gotIt": "Got it",
+  "requestsTitle": "People want to jajan with you",
+  "requestsSubtitle": "Choose who joins your gang. The host counts toward the group size.",
+  "requestAccept": "Accept",
+  "requestReject": "Reject",
+  "requestAccepted": "Accepted",
+  "requestRejected": "Rejected",
+  "requestAcceptedMessage": "You’re in! The host accepted your request.",
+  "requestRejectedMessage": "The host declined your request. You can find another Jajan on the map.",
+  "requestAlreadyDecided": "This request has already been handled. Refresh to see the latest requests.",
+  "requestDecisionFailed": "We could not confirm your decision. Check your connection and retry. Repeating the same decision will not add the member twice.",
+  "eventCancel": "Cancel Jajan",
+  "eventCancelTitle": "Cancel this Jajan?",
+  "eventCancelWarning": "This will permanently delete this Jajan, all join requests and its membership data, even if people have already joined. This cannot be undone.",
+  "eventKeep": "Keep Jajan",
+  "eventCancelled": "This Jajan has been cancelled",
+  "eventCleaningUp": "Finishing cancellation…",
+  "eventFinishCancellation": "Finish cancellation",
+  "eventCancelFailed": "We could not confirm deletion. Tap Retry to continue cancellation.",
+  "eventCleanupPending": "A cancellation still needs to finish. Tap to retry cleanup.",
+  "eventCancellationDetails": "Cancelling removes this Jajan, its messages, join requests and membership data.",
+  "eventCancellationPending": "Cancellation pending",
+  "eventCancellationNotice": "Deletion is not finished yet. This Jajan is no longer accepting requests.",
+  "eventCancelConnection": "We could not confirm deletion after retrying. Check your connection, then tap Retry to continue.",
+  "eventCancelPermission": "Cancellation was not permitted. Please try again later or contact support if this continues.",
+  "chatTitle": "Jajan Gang",
+  "chatSubtitle": "Good food. Great company.",
+  "chatTemporary": "YOUR TEMPORARY GANG • ONE FOOD ADVENTURE",
+  "chatMembers": "Meet your gang",
+  "chatOpen": "Open Gang Chat",
+  "chatMyGangs": "Your temporary gangs",
+  "chatNoGangs": "Your gang starts here. Create a Jajan or join one to unlock a chat!",
+  "chatHint": "Type a message…",
+  "chatSend": "Send message",
+  "chatYou": "You",
+  "chatOlder": "Load older messages",
+  "chatEmpty": "The gang is here!",
+  "chatEmptyHint": "Break the ice. What are we eating?",
+  "chatClosed": "This chat is closed or you no longer have access.",
+  "chatLoadError": "We could not load the chat. Check your connection and retry.",
+  "chatMembersError": "We could not load the member list. Reopen the chat to retry.",
+  "chatSendError": "Message not confirmed. Tap Send again to retry; your text is still here.",
+  "chatInvalid": "Write a message of 1–1,000 characters.",
+  "chatNotifications": "Enable chat notifications",
+  "chatNotificationsOn": "Gang notifications are enabled on this device.",
+  "chatNotificationsError": "Notifications could not be enabled. Check app permissions in Settings and try again.",
+  "chatNewMessage": "Your gang has a new message!",
+  "chatFailed": "Failed to send. Tap to retry.",
+  "chatPending": "Sending message",
+  "chatSent": "Message sent",
+  "eventViewMembers": "View Members",
+  "chatInbox": "Chats",
+  "chatMoreRooms": "Load more chats",
+  "chatUnread": "Unread messages",
+  "activityTitle": "Notifications",
+  "activityLimit": "Your 10 most recent notifications. Message alerts are grouped by chat.",
+  "activityEmpty": "All quiet for now. Your gang updates will appear here.",
+  "activityAccepted": "Your request to join a Jajan has been accepted!",
+  "activityRejected": "Your request to join a Jajan was declined.",
+  "activityError": "We could not load this update. Check your connection and try again.",
+  "activityUnread": "Unread notification",
+  "chatPreview": "{name}: {text}",
+  "@chatPreview": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "pollTitle": "Where should we go?",
+  "pollSubtitle": "Pick the gang’s next food stop",
+  "pollCreate": "Create a vote",
+  "pollCreateHint": "Add 2–5 destinations. Starting the vote closes new join requests and freezes the member list.",
+  "pollWaiting": "Any gang member can start a destination vote here.",
+  "pollAdd": "Add destination",
+  "pollRemove": "Remove last destination",
+  "pollInvalid": "Enter 2–5 different destination names, up to 60 characters each.",
+  "pollTap": "Tap a destination to vote. You can change your vote until the host finishes.",
+  "pollYourVote": "Your vote",
+  "pollFinish": "Finish voting",
+  "pollFinishHint": "Confirm the destination below. Voting will close for everyone.",
+  "pollTie": "It’s a tie! Choose the destination",
+  "pollNoVotes": "At least one vote is needed to finish.",
+  "pollDestination": "Destination Selected 🎉",
+  "pollClosed": "Voting is closed or this Jajan has expired.",
+  "pollError": "Could not update voting. Check your connection and retry.",
+  "pollChanged": "Votes changed. Review the latest results and finish again.",
+  "pollExists": "This gang already has a vote. Open the current poll.",
+  "pollOption": "Destination {number}",
+  "pollVotes": "{count, plural, =0{No votes yet} =1{1 vote} other{{count} votes}}",
+  "activityJoinRequest": "{name} requested to join your Jajan.",
+  "@pollOption": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@pollVotes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@activityJoinRequest": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "descriptionLabel": "Short description (optional)",
+  "descriptionHint": "Suggest a place or share your plan…",
+  "descriptionTooLong": "Keep the description within 150 characters.",
+  "eventGoing": "Going There",
+  "eventStartTrip": "We’re on the way!",
+  "eventCompleteAction": "Complete Jajan",
+  "eventCompleteTitle": "🎉 JAJAN COMPLETE!",
+  "eventCompleteWith": "You jajanned with:",
+  "eventDone": "Done",
+  "eventStatusFailed": "Could not update the Jajan status. Check your connection and retry.",
+  "eventStatusChanged": "This Jajan has changed or expired. Check its latest status.",
+  "eventDescription": "The plan",
+  "friendsTitle": "My Friends",
+  "friendProfile": "Foodie profile",
+  "friendAdd": "Add Friend",
+  "friendAccept": "Accept",
+  "friendDecline": "Decline",
+  "friendCancel": "Cancel request",
+  "friendRemove": "Remove friend",
+  "friendRemoveHint": "Remove this person from your friends? You can still meet in Jajan events.",
+  "friendIncoming": "Incoming",
+  "friendOutgoing": "Sent",
+  "friendIncomingHint": "Wants to be your friend",
+  "friendPending": "Friend request sent",
+  "friendConnected": "You’re friends!",
+  "friendNotConnected": "You’re not connected as friends.",
+  "friendsEmpty": "Meet your next food buddy! Open an event’s member list and tap someone to add a friend.",
+  "friendRequestsEmpty": "No friend requests here yet.",
+  "friendError": "Could not load or update friends. Check your connection and retry.",
+  "friendUnavailable": "This profile is unavailable. Open an existing event’s member list and try again.",
+  "friendChanged": "This request has changed. Check its latest status.",
+  "friendPrivacy": "Only your name and avatar are shared. Your email and location stay private.",
+  "friendNotification": "{name} sent you a friend request.",
+  "@friendNotification": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "passportTitle": "Food Passport",
+  "passportAdd": "Add a food memory",
+  "passportRestaurant": "Restaurant / place",
+  "passportDish": "What did you eat?",
+  "passportReview": "Your short review (optional)",
+  "passportAgain": "Would eat again",
+  "passportPrivate": "Only me",
+  "passportFriends": "My friends",
+  "passportVisibility": "Who can see this memory?",
+  "passportDate": "Visit date",
+  "passportSave": "Save memory",
+  "passportEdit": "Edit memory",
+  "passportDelete": "Delete memory",
+  "passportDeleteHint": "Delete this food memory permanently?",
+  "passportEmpty": "Your next delicious discovery belongs here.",
+  "passportFriendEmpty": "No shared food memories yet.",
+  "passportError": "Could not load or save your food memories. Check your connection and retry.",
+  "passportInvalid": "Enter a restaurant, a dish, and a rating from 1 to 5.",
+  "passportSummary": "{dishes} memories · {places} places · {favorites} favorites shown",
+  "dumplingRating": "{rating}/5 dumplings",
+  "rating1": "Not for me",
+  "rating2": "Just okay",
+  "rating3": "Pretty good",
+  "rating4": "Delicious!",
+  "rating5": "Legendary bite!",
+  "wheelTitle": "Food roulette",
+  "wheelCreate": "Drop a food wheel",
+  "wheelHint": "One food per member. Any two members can get the wheel rolling!",
+  "wheelSuggestion": "Just a suggestion — your host still chooses the destination.",
+  "wheelOption": "Your food pick",
+  "wheelAdd": "Submit",
+  "wheelSpin": "Spin the wheel!",
+  "wheelSpinning": "Let the wheel decide…",
+  "wheelWinner": "The wheel picked: {food}!",
+  "wheelNew": "Start a new round",
+  "wheelWait": "Waiting for the wheel creator to spin.",
+  "wheelMinimum": "At least two members must add a food.",
+  "wheelError": "The wheel could not be updated. Check your connection and retry.",
+  "wheelChanged": "This round changed or the Jajan is no longer active. Refresh and try again.",
+  "wheelInvalid": "Enter a food name (1–40 characters).",
+  "wheelCreator": "Started by {name}",
+  "wheelHistory": "Latest 10 rounds",
+  "wheelEmpty": "No previous rounds yet.",
+  "@passportSummary": {
+    "placeholders": {
+      "dishes": {
+        "type": "int"
+      },
+      "places": {
+        "type": "int"
+      },
+      "favorites": {
+        "type": "int"
+      }
+    }
+  },
+  "@dumplingRating": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "@wheelWinner": {
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
+  },
+  "@wheelCreator": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "wheelHaptics": "Wheel vibration",
+  "wheelSubmitted": "Submitted",
+  "wheelLocked": "Your pick is already submitted and cannot be edited.",
+  "chatActivities": "Chat activities",
+  "chatVoting": "Voting",
+  "friendSent": "Request sent",
+  "friendSendFailed": "Your friend request was not sent. Check your connection and tap Add friend to try again.",
+  "passportArea": "Area / neighborhood (optional)",
+  "dropVoteConfirm": "Drop a vote in this chat?",
+  "dropWheelConfirm": "Drop a food wheel in this chat?",
+  "dropActivity": "Yes, let’s do it",
+  "pollHostOnly": "Any gang member can create a vote. The host selects the final destination.",
+  "jajanAccess": "Who can join?",
+  "jajanPublic": "Public",
+  "jajanPrivate": "Private",
+  "jajanPublicHint": "Public · Join instantly when there is space.",
+  "jajanPrivateHint": "Private · Visible nearby, with host approval required to join.",
+  "jajanRequestJoin": "Request to join",
+  "jajanJoined": "You joined this Jajan!",
+  "memberJoinedNotification": "{name} joined your Jajan!",
+  "@memberJoinedNotification": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationSound": "Notification sound",
+  "notificationSoundHint": "A gentle chime while the app is open",
+  "notificationSoundSaveError": "Could not save your sound preference. Please try again.",
+  "announcementPermissionTitle": "Stay in the Jajan loop!",
+  "announcementPermissionBody": "Allow notifications for news and announcements from Jajan Gangs. You can change this anytime in your device settings.",
+  "announcementLater": "Not now",
+  "announcementEnable": "Enable notifications"
+}

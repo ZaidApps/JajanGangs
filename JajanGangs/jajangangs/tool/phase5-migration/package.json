@@ -1,0 +1,6 @@
+{
+  "name": "jajan-phase5-migration",
+  "private": true,
+  "type": "module",
+  "dependencies": { "firebase-admin": "^13.0.0" }
+}
