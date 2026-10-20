@@ -15,6 +15,26 @@ class GangChatService {
           .orderBy(FieldPath.documentId, descending: true);
   String newId(String id) => event(id).collection('messages').doc().id;
 
+  Future<void> hideFromInbox(
+    String id,
+    String uid,
+    String lastMessageId,
+  ) async {
+    final state = event(id).collection('chat_state').doc(uid);
+    try {
+      await db.runTransaction((tx) async {
+        await tx.get(state);
+        // Preserve the read cursor; this preference never deletes shared data.
+        tx.set(state, {
+          'hiddenMessageId': lastMessageId,
+          'hiddenAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      });
+    } catch (_) {
+      throw const AuthFailure('chatDeleteFailed');
+    }
+  }
+
   Future<void> markRead(String id, String uid, GangMessage message) async {
     final stamp = message.timestamp;
     if (stamp == null) return;

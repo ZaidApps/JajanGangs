@@ -19,6 +19,14 @@ class CreateJajanController extends ChangeNotifier {
   int capacity = 2;
   String description = '';
   String joinPolicy = 'public';
+  DateTime? scheduledAt;
+  void chooseSchedule(DateTime? value) {
+    if (locked) return;
+    scheduledAt = value?.toUtc();
+    error = null;
+    _emit();
+  }
+
   void choosePolicy(String value) {
     if (!locked && ['public', 'private'].contains(value)) {
       joinPolicy = value;
@@ -44,6 +52,7 @@ class CreateJajanController extends ChangeNotifier {
     try {
       pending = await _service.restoreDraft(uid);
       if (pending != null) {
+        scheduledAt = pending!.scheduledAt;
         description = pending!.description;
         joinPolicy = pending!.joinPolicy;
         craving = pending!.craving;
@@ -89,6 +98,7 @@ class CreateJajanController extends ChangeNotifier {
     try {
       // An unresolved write must reuse its original location and event ID.
       if (pending == null) {
+        JajanService.validateSchedule(scheduledAt);
         await _service.ensureCanCreate(uid);
         if (_disposed) return null;
         locating = true;
@@ -114,6 +124,7 @@ class CreateJajanController extends ChangeNotifier {
         craving,
         capacity,
         area,
+        scheduledAt: scheduledAt,
         description: description,
         joinPolicy: joinPolicy,
       );
@@ -123,6 +134,7 @@ class CreateJajanController extends ChangeNotifier {
       return event;
     } catch (e) {
       error = e is AuthFailure ? e.message : 'jajanSaveError';
+      if (error == 'jajanScheduleInvalid') pending = null;
       return null;
     } finally {
       locating = false;

@@ -12,6 +12,27 @@ extension LocalizedMessages on AppLocalizations {
   String message(String key) {
     if (key.startsWith('signInFailed:')) return signInFailed(key.substring(13));
     return switch (key) {
+      'jajanScheduleInvalid' => jajanScheduleInvalid,
+      'pgAlreadyMember' => pgAlreadyMember,
+      'pgError' => pgError,
+      'pgInvalid' => pgInvalid,
+      'pgFull' => pgFull,
+      'pgFriendsOnly' => pgFriendsOnly,
+      'pgUnavailable' => pgUnavailable,
+      'pgTransferFirst' => pgTransferFirst,
+      'pgCapacity' => pgCapacity,
+
+      'bioLong' => bioLong,
+      'chatDeleteFailed' => chatDeleteFailed,
+      'inviteFailed' => inviteFailed,
+      'socialBlocked' => socialBlocked,
+      'socialFailed' => socialFailed,
+      'leaveHost' => leaveHost,
+      'reportReason_spam' => reportReason_spam,
+      'reportReason_harassment' => reportReason_harassment,
+      'reportReason_unsafe' => reportReason_unsafe,
+      'reportReason_other' => reportReason_other,
+
       'wheelLocked' => wheelLocked,
       'friendSendFailed' => friendSendFailed,
       'passportError' => passportError,

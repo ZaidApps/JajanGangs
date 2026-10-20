@@ -20,6 +20,7 @@ class _AuthFlowViewState extends State<AuthFlowView>
   final _form = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _bio = TextEditingController();
   final _name = TextEditingController();
   String? _avatarId;
   bool _obscure = true;
@@ -47,6 +48,7 @@ class _AuthFlowViewState extends State<AuthFlowView>
     _lastPage = auth.page;
     if (auth.page == AuthPage.profile) {
       _name.text = auth.name ?? auth.user?.displayName ?? '';
+      _bio.text = auth.bio;
       _avatarId = auth.avatarId;
     }
   }
@@ -61,6 +63,7 @@ class _AuthFlowViewState extends State<AuthFlowView>
       _obscure = true;
       if (auth.page == AuthPage.profile) {
         _name.text = auth.name ?? auth.user?.displayName ?? '';
+        _bio.text = auth.bio;
         _avatarId = auth.avatarId;
       } else if (auth.page == AuthPage.register) {
         _avatarId = null;
@@ -83,6 +86,7 @@ class _AuthFlowViewState extends State<AuthFlowView>
     WidgetsBinding.instance.removeObserver(this);
     _email.dispose();
     _password.dispose();
+    _bio.dispose();
     _name.dispose();
     super.dispose();
   }
@@ -96,11 +100,17 @@ class _AuthFlowViewState extends State<AuthFlowView>
       case AuthPage.login:
         auth.login(_email.text, _password.text);
       case AuthPage.register:
-        auth.register(_name.text, _email.text, _password.text, _avatarId);
+        auth.register(
+          _name.text,
+          _email.text,
+          _password.text,
+          _avatarId,
+          bio: _bio.text,
+        );
       case AuthPage.resetPassword:
         auth.sendReset(_email.text);
       case AuthPage.profile:
-        auth.saveProfile(_name.text, _avatarId);
+        auth.saveProfile(_name.text, _avatarId, bio: _bio.text);
       default:
         break;
     }
@@ -278,6 +288,22 @@ class _AuthFlowViewState extends State<AuthFlowView>
                     if (page == AuthPage.register ||
                         page == AuthPage.profile) ...[
                       _nameField(),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _bio,
+                        validator: (value) =>
+                            (value ?? '').trim().runes.length > 150
+                            ? context.l10n.bioLong
+                            : null,
+                        enabled: !auth.busy,
+                        maxLength: 150,
+                        minLines: 2,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          labelText: context.l10n.bioLabel,
+                          hintText: context.l10n.bioHint,
+                        ),
+                      ),
                       SizedBox(height: 16),
                       AvatarPicker(
                         key: ValueKey(page),

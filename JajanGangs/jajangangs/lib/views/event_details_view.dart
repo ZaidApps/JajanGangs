@@ -1,4 +1,7 @@
+import '../widgets/jajan_schedule_badge.dart';
+import '../widgets/game_dialog.dart';
 import 'jajan_complete_view.dart';
+import 'invite_friends_view.dart';
 import 'join_requests_view.dart';
 import 'gang_chat_view.dart';
 import 'event_members_view.dart';
@@ -13,6 +16,7 @@ import '../l10n/l10n.dart';
 import '../models/home_map_state.dart';
 import '../models/jajan_event.dart';
 import '../widgets/auth_scaffold.dart';
+import '../widgets/event_details_shell.dart';
 import '../widgets/character_avatar.dart';
 import '../widgets/game_map_canvas.dart';
 import '../widgets/welcome_game_elements.dart';
@@ -73,6 +77,34 @@ class _EventDetailsViewState extends State<EventDetailsView> {
     );
   }
 
+  Future<void> _leave() async {
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (context) => GameDialog(
+        icon: const Icon(Icons.logout_rounded),
+        title: Text(context.l10n.leaveJajan),
+        content: Text(context.l10n.leaveHint),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(context.l10n.back),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(context.l10n.leaveJajan),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || yes != true) return;
+    final left = await c.leave();
+    if (mounted && left) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(context.l10n.leaveSuccess)));
+      Navigator.pop(context);
+    }
+  }
+
   Future<void> _cancel() async {
     if (c.cancelling) return;
     final agreed =
@@ -80,7 +112,8 @@ class _EventDetailsViewState extends State<EventDetailsView> {
         c.event?.state == 'CANCELLING' ||
         await showDialog<bool>(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (context) => GameDialog(
+                icon: const Icon(Icons.event_busy_rounded),
                 title: Text(context.l10n.eventCancelTitle),
                 content: Text(context.l10n.eventCancelWarning),
                 actions: [
@@ -107,16 +140,35 @@ class _EventDetailsViewState extends State<EventDetailsView> {
     });
   }
 
-  Widget _stat(IconData icon, String text) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
+  Widget _stat(IconData icon, String text) => Container(
+    margin: const EdgeInsets.symmetric(vertical: 3),
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      color: icon == Icons.timer_rounded
+          ? const Color(0xFFFFEAC1)
+          : const Color(0xFFF0F5F1),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: const Color(0xFFDCE5DF)),
+    ),
     child: Row(
       children: [
-        Icon(icon, color: WelcomePalette.navy),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, size: 21, color: WelcomePalette.navy),
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+              color: WelcomePalette.navy,
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ],
@@ -131,7 +183,9 @@ class _EventDetailsViewState extends State<EventDetailsView> {
       if (c.cancellationStarted) {
         return PopScope(
           canPop: !c.cancelling,
-          child: AuthScaffold(
+          child: EventDetailsShell(
+            accent: const Color(0xFFFFD8B0),
+            icon: Icons.hourglass_top_rounded,
             title: l.eventCancel,
             subtitle: l.eventCancellationDetails,
             badge: l.eventDetails,
@@ -173,7 +227,9 @@ class _EventDetailsViewState extends State<EventDetailsView> {
       );
       final expired = event != null && c.secondsLeft == 0;
       final closing = event?.state == 'CANCELLING';
-      return AuthScaffold(
+      return EventDetailsShell(
+        accent: foodColor(marker.kind),
+        icon: foodIcon(marker.kind),
         title: demo
             ? mapEventTitle(context, marker)
             : c.isOwner
@@ -190,6 +246,84 @@ class _EventDetailsViewState extends State<EventDetailsView> {
             ? l.eventExpired
             : l.eventDetails,
         onBack: () => Navigator.pop(context),
+        primaryActions: [
+          if (!demo && event != null && !c.isOwner && !c.isMember) ...[
+            const SizedBox(height: 12),
+            AuthAction(
+              label: closing
+                  ? l.eventClosed
+                  : c.requestStatus == 'ACCEPTED'
+                  ? (event!.isPublic ? l.jajanJoined : l.requestAccepted)
+                  : c.requestStatus == 'REJECTED'
+                  ? l.requestRejected
+                  : c.sent
+                  ? l.eventRequestSent
+                  : c.isMember
+                  ? l.eventAlreadyMember
+                  : expired
+                  ? l.eventExpired
+                  : event!.state != 'OPEN'
+                  ? l.eventClosed
+                  : event.memberCount >= event.capacity
+                  ? l.eventFull
+                  : (event.isPublic ? l.eventJoin : l.jajanRequestJoin),
+              busy: c.busy,
+              onPressed: c.canJoin ? _join : null,
+            ),
+          ],
+          if (demo) ...[
+            const SizedBox(height: 12),
+            AuthAction(label: l.eventJoin, onPressed: null),
+          ],
+          if (c.confirmed && c.isMember && !closing) ...[
+            const SizedBox(height: 12),
+            AuthAction(
+              label: l.chatOpen,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => GangChatView(eventId: c.id, uid: c.uid),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+          if (c.confirmed && c.isMember && event?.state == 'COMPLETED')
+            AuthAction(
+              label: l.eventCompleteTitle,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => JajanCompleteView(event: event!),
+                ),
+              ),
+            ),
+          if (c.isOwner &&
+              c.confirmed &&
+              event!.isActive &&
+              ['DESTINATION_SELECTED', 'ON_THE_WAY'].contains(event.state))
+            AuthAction(
+              label: event.state == 'DESTINATION_SELECTED'
+                  ? l.eventStartTrip
+                  : l.eventCompleteAction,
+              busy: c.progressing,
+              onPressed: c.cancelling || c.progressing
+                  ? null
+                  : () async {
+                      final target = event.state == 'DESTINATION_SELECTED'
+                          ? 'ON_THE_WAY'
+                          : 'COMPLETED';
+                      await c.advance(target);
+                      if (mounted &&
+                          c.actionError == null &&
+                          target == 'COMPLETED') {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => JajanCompleteView(event: event),
+                          ),
+                        );
+                      }
+                    },
+            ),
+        ],
         children: [
           if (c.actionError != null)
             AuthMessage(text: l.message(c.actionError!), isError: true),
@@ -203,44 +337,71 @@ class _EventDetailsViewState extends State<EventDetailsView> {
             ),
           ],
           if (demo || event != null) ...[
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(20),
+            if (!demo)
+              Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: foodColor(marker.kind),
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: WelcomePalette.navy, width: 3),
-                  boxShadow: const [
-                    BoxShadow(color: WelcomePalette.navy, offset: Offset(0, 5)),
+                  color: WelcomePalette.navy,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: foodColor(marker.kind),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CharacterAvatar(
+                        avatarId:
+                            event?.creatorAvatarId ??
+                            (c.isOwner ? widget.ownerAvatarId : null),
+                        size: 42,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l.eventHost,
+                            style: const TextStyle(
+                              color: WelcomePalette.gold,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.restaurant_rounded,
+                      color: WelcomePalette.gold,
+                      size: 22,
+                    ),
                   ],
                 ),
-                child: Icon(
-                  foodIcon(marker.kind),
-                  size: 58,
-                  color: WelcomePalette.navy,
-                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            if (!demo)
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: CharacterAvatar(
-                  avatarId:
-                      event?.creatorAvatarId ??
-                      (c.isOwner ? widget.ownerAvatarId : null),
-                  size: 52,
-                ),
-                title: Text(
-                  name,
-                  style: const TextStyle(fontWeight: FontWeight.w900),
-                ),
-                subtitle: Text(l.eventHost),
+            if (event?.scheduledAt != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: JajanScheduleBadge(time: event!.scheduledAt),
               ),
             if (event != null && event.description.isNotEmpty)
               Container(
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(vertical: 16),
+                margin: const EdgeInsets.only(bottom: 14),
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFE6A3),
@@ -273,8 +434,8 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                     Text(
                       event.description,
                       style: const TextStyle(
-                        fontSize: 18,
-                        height: 1.45,
+                        fontSize: 16,
+                        height: 1.3,
                         fontWeight: FontWeight.w600,
                         color: WelcomePalette.navy,
                       ),
@@ -283,15 +444,9 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                 ),
               ),
             if (event?.state == 'ON_THE_WAY')
-              Text(
-                l.eventGoing,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              _stat(Icons.directions_walk_rounded, l.eventGoing),
             if (event?.state == 'COMPLETED')
-              Text(
-                l.eventCompleteTitle,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              _stat(Icons.celebration_rounded, l.eventCompleteTitle),
             _stat(Icons.restaurant_rounded, mapEventTitle(context, marker)),
             _stat(
               Icons.groups_rounded,
@@ -324,6 +479,10 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                   Icons.timer_rounded,
                   expired
                       ? l.eventExpired
+                      : event?.scheduledAt != null && c.secondsLeft > 2700
+                      ? l.jajanExpiresOn(
+                          jajanScheduleTime(context, event!.expiresAt),
+                        )
                       : l.eventTimeLeft(
                           clock.format(c.secondsLeft ~/ 60),
                           clock.format(c.secondsLeft % 60),
@@ -331,7 +490,7 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                 ),
               if (!expired && !closing && event!.state == 'DECIDING')
                 AuthMessage(text: l.eventClosed),
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
               if (c.confirmed && !closing)
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
@@ -363,69 +522,49 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                 ),
               if (event != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: _stat(
+                    event.isPublic
+                        ? Icons.public_rounded
+                        : Icons.lock_outline_rounded,
                     event.isPublic ? l.jajanPublicHint : l.jajanPrivateHint,
                   ),
                 ),
-              if (c.confirmed && c.isMember && !closing) ...[
-                const SizedBox(height: 12),
-                AuthAction(
-                  label: l.chatOpen,
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => GangChatView(eventId: c.id, uid: c.uid),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-              if (c.confirmed && c.isMember && event?.state == 'COMPLETED')
-                AuthAction(
-                  label: l.eventCompleteTitle,
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => JajanCompleteView(event: event!),
-                    ),
-                  ),
+              if (c.confirmed &&
+                  c.isMember &&
+                  !c.isOwner &&
+                  event!.isActive &&
+                  !closing)
+                OutlinedButton.icon(
+                  onPressed: c.busy ? null : _leave,
+                  icon: const Icon(Icons.exit_to_app_rounded),
+                  label: Text(l.leaveJajan),
                 ),
               if (c.isOwner) ...[
                 if (c.confirmed &&
                     event!.isActive &&
-                    [
-                      'DESTINATION_SELECTED',
-                      'ON_THE_WAY',
-                    ].contains(event.state))
-                  AuthAction(
-                    label: event.state == 'DESTINATION_SELECTED'
-                        ? l.eventStartTrip
-                        : l.eventCompleteAction,
-                    busy: c.progressing,
-                    onPressed: c.cancelling || c.progressing
+                    event.state == 'OPEN' &&
+                    !closing) ...[
+                  OutlinedButton.icon(
+                    onPressed: c.cancelling
                         ? null
-                        : () async {
-                            final target = event.state == 'DESTINATION_SELECTED'
-                                ? 'ON_THE_WAY'
-                                : 'COMPLETED';
-                            await c.advance(target);
-                            if (mounted &&
-                                c.actionError == null &&
-                                target == 'COMPLETED') {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      JajanCompleteView(event: event),
-                                ),
-                              );
-                            }
-                          },
+                        : () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  InviteFriendsView(uid: c.uid, eventId: c.id),
+                            ),
+                          ),
+                    icon: const Icon(Icons.person_add_alt_1_rounded),
+                    label: Text(l.inviteFriends),
                   ),
+                  const SizedBox(height: 12),
+                ],
                 if (event?.isPublic != true) ...[
                   if (c.requestCount != null)
                     Text(
                       l.eventRequestCount(c.requestCount!),
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -463,30 +602,8 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                         ? l.requestRejectedMessage
                         : l.eventRequestExplanation,
                   ),
-                AuthAction(
-                  label: closing
-                      ? l.eventClosed
-                      : c.requestStatus == 'ACCEPTED'
-                      ? (event!.isPublic ? l.jajanJoined : l.requestAccepted)
-                      : c.requestStatus == 'REJECTED'
-                      ? l.requestRejected
-                      : c.sent
-                      ? l.eventRequestSent
-                      : c.isMember
-                      ? l.eventAlreadyMember
-                      : expired
-                      ? l.eventExpired
-                      : event!.state != 'OPEN'
-                      ? l.eventClosed
-                      : event.memberCount >= event.capacity
-                      ? l.eventFull
-                      : (event.isPublic ? l.eventJoin : l.jajanRequestJoin),
-                  busy: c.busy,
-                  onPressed: c.canJoin ? _join : null,
-                ),
               ],
-            ] else
-              AuthAction(label: l.eventJoin, onPressed: null),
+            ],
           ],
         ],
       );

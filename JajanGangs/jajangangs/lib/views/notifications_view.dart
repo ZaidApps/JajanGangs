@@ -1,3 +1,5 @@
+import 'permanent_gang_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +14,9 @@ import 'gang_chat_view.dart';
 import 'friend_profile_view.dart';
 
 String activityText(BuildContext context, String type) => switch (type) {
+  'gang_invite' => context.l10n.pgInviteNotification,
+  'gang_message' => context.l10n.pgMessageNotification,
+  'event_invite' => context.l10n.inviteNotification,
   'accepted' => context.l10n.activityAccepted,
   'rejected' => context.l10n.activityRejected,
   _ => context.l10n.chatNewMessage,
@@ -28,6 +33,23 @@ Future<void> openActivity(
     await controller.read(doc);
     if (!context.mounted) return;
     final data = doc.data();
+    if (data['type'] == 'gang_invite' || data['type'] == 'gang_message') {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => data['type'] == 'gang_invite'
+              ? PermanentGangInvitationView(
+                  id: data['gangId'] as String,
+                  uid: controller.uid,
+                )
+              : PermanentGangChatView(
+                  id: data['gangId'] as String,
+                  uid: controller.uid,
+                ),
+        ),
+      );
+      return;
+    }
     if (data['type'] == 'friend_request') {
       await showFriendProfile(
         context,

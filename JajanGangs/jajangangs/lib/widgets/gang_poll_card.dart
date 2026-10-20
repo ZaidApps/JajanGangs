@@ -1,3 +1,5 @@
+import 'game_dialog.dart';
+
 import 'package:flutter/material.dart';
 
 import '../controllers/gang_poll_controller.dart';
@@ -56,7 +58,7 @@ class _GangPollCardState extends State<GangPollCard>
     final leaders = p.leaders;
     final winner = await showDialog<int>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => GameDialog(
         title: Text(
           leaders.length > 1 ? context.l10n.pollTie : context.l10n.pollFinish,
         ),
@@ -286,7 +288,8 @@ class _PollEditorState extends State<_PollEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
+  Widget build(BuildContext context) => GameDialog(
+    icon: const Icon(Icons.how_to_vote_outlined),
     title: Text(context.l10n.pollCreate),
     content: SizedBox(
       width: 360,

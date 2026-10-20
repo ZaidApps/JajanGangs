@@ -20,7 +20,7 @@ class FoodWheelService {
           'DESTINATION_SELECTED',
           'ON_THE_WAY',
         ].contains(e['state']) ||
-        !(e['createdAt'] as Timestamp)
+        !((e['scheduledAt'] ?? e['createdAt']) as Timestamp)
             .toDate()
             .add(const Duration(minutes: 45))
             .isAfter(DateTime.now())) {
@@ -98,7 +98,10 @@ class FoodWheelService {
       requireActive(e.data(), uid);
       if (!snap.exists) throw const AuthFailure('wheelChanged');
       final wheel = FoodWheel(snap.data()!);
-      if (wheel.round != round || wheel.creator != uid)
+      if (wheel.round != round ||
+          (wheel.creator != uid &&
+              !(e.data()!['creatorId'] == uid &&
+                  !(e.data()!['memberIds'] as List).contains(wheel.creator))))
         throw const AuthFailure('wheelChanged');
       if (wheel.closed) return; // Safe retry: never reroll a committed result.
       final uids = wheel.uids;

@@ -1,3 +1,7 @@
+import '../widgets/game_dialog.dart';
+import 'edit_profile_view.dart';
+import '../widgets/adventure_header.dart';
+import '../widgets/nearby_jajan_card.dart';
 import '../widgets/notification_sound_tile.dart';
 import '../services/jajan_service.dart';
 import '../widgets/activity_bell.dart';
@@ -15,7 +19,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 
 import '../config/app_config.dart';
@@ -83,7 +86,8 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
       if (mounted) {
         await showDialog<void>(
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) => GameDialog(
+            icon: const Icon(Icons.info_outline_rounded),
             title: Text(context.l10n.homeCreate),
             content: Text(
               context.l10n.message(
@@ -161,35 +165,19 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (kind == 'profile')
-                Center(
-                  child: CharacterAvatar(
-                    avatarId: widget.auth.avatarId,
-                    size: 88,
-                  ),
-                )
-              else
-                Icon(
-                  kind == 'profile'
-                      ? Icons.person_rounded
-                      : kind == 'gang'
-                      ? Icons.groups_rounded
-                      : Icons.add_location_alt_rounded,
-                  size: 52,
-                  color: WelcomePalette.navy,
-                ),
-              const SizedBox(height: 16),
-              Text(
-                kind == 'profile'
+              AdventureHeader(
+                title: kind == 'profile'
                     ? (widget.auth.name ?? sheetContext.l10n.foodie)
                     : kind == 'gang'
                     ? sheetContext.l10n.homeGang
                     : sheetContext.l10n.homeCreate,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 26,
-                ),
+                subtitle: kind == 'profile'
+                    ? widget.auth.bio
+                    : sheetContext.l10n.profileTagline,
+                icon: Icons.groups_rounded,
+                leading: kind == 'profile'
+                    ? CharacterAvatar(avatarId: widget.auth.avatarId, size: 64)
+                    : null,
               ),
               const SizedBox(height: 12),
               if (kind != 'profile')
@@ -199,8 +187,55 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
                 ),
               const SizedBox(height: 20),
               if (kind == 'profile') ...[
-                const NotificationSoundTile(),
                 FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFFFFCD61),
+                    foregroundColor: const Color(0xFF102C42),
+                    padding: const EdgeInsets.all(18),
+                  ),
+                  onPressed: () async {
+                    final before = widget.auth.avatarId;
+                    Navigator.pop(sheetContext);
+                    await Navigator.of(context).push<void>(
+                      MaterialPageRoute(
+                        builder: (_) => EditProfileView(auth: widget.auth),
+                      ),
+                    );
+                    if (!mounted || widget.auth.user?.uid != _home.uid) return;
+                    final saved = widget.auth.avatarId;
+                    if (saved != null && saved != before) {
+                      _home.updateOwnAvatar(saved);
+                    }
+                  },
+                  icon: const Icon(Icons.edit_rounded),
+                  label: Text(sheetContext.l10n.profileEdit),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE7F1EB),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: const NotificationSoundTile(),
+                ),
+                const SizedBox(height: 18),
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                    backgroundColor: const Color(0xFF102C42),
+                    foregroundColor: Colors.white,
+                    alignment: Alignment.center,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.pop(sheetContext);
                     Navigator.of(context).push(
@@ -217,6 +252,18 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
                 ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                    backgroundColor: const Color(0xFF102C42),
+                    foregroundColor: Colors.white,
+                    alignment: Alignment.center,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.pop(sheetContext);
                     Navigator.of(context).push(
@@ -232,6 +279,18 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
               ],
               if (kind == 'profile')
                 FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                    backgroundColor: const Color(0xFFF8E7DF),
+                    foregroundColor: const Color(0xFF94452D),
+                    alignment: Alignment.center,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.pop(sheetContext);
                     unawaited(widget.auth.signOut());
@@ -383,10 +442,6 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
   Widget _eventPanel(BuildContext context) {
     final event = _home.selected;
     final l = context.l10n;
-    final number = NumberFormat(
-      '0.#',
-      Localizations.localeOf(context).languageCode,
-    );
     final waiting = _home.loadingEvents || _home.locating;
     return Container(
       decoration: const BoxDecoration(
@@ -394,223 +449,158 @@ class _MapViewState extends State<MapView> with WidgetsBindingObserver {
         borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
       ),
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 12),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l.homeNearby,
-                    style: const TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.w900,
-                      color: WelcomePalette.navy,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  tooltip: l.eventRefresh,
-                  onPressed: waiting ? null : _home.loadEvents,
-                  icon: const Icon(Icons.refresh_rounded),
-                ),
-              ],
-            ),
-            if (waiting) const LinearProgressIndicator(),
-            if (_home.area.isFallback) ...[
-              const SizedBox(height: 8),
-              _locationControls(context),
-            ],
-            if (_home.recoveringCancellations) Text(l.eventCleaningUp),
-            if (_home.cancellationError != null)
-              TextButton(
-                onPressed: _home.recoveringCancellations
-                    ? null
-                    : _home.resumeCancellations,
-                child: Text(l.message(_home.cancellationError!)),
-              ),
-            if (_home.eventsError != null)
-              TextButton.icon(
-                onPressed: waiting ? null : _home.loadEvents,
-                icon: const Icon(Icons.cloud_off_rounded),
-                label: Text(
-                  l.message(_home.eventsError!),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (event == null) ...[
-              const SizedBox(height: 12),
-              Icon(
-                waiting
-                    ? Icons.travel_explore_rounded
-                    : Icons.ramen_dining_rounded,
-                size: 42,
-                color: WelcomePalette.navy,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                waiting
-                    ? l.homeFindingEvents
-                    : _home.eventsError != null
-                    ? l.homeEventsUnavailable
-                    : _home.area.isFallback
-                    ? l.homeAreaNeeded
-                    : l.homeNoEvents,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                _home.area.isFallback
-                    ? l.homeAreaNeededHint
-                    : _home.eventsError != null
-                    ? l.homeEventsUnavailableHint
-                    : l.homeNoEventsHint,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Color(0xFF53736F)),
-              ),
-            ] else ...[
-              const SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _home.events
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: ChoiceChip(
-                            selected: e.id == event.id,
-                            onSelected: (_) => _home.select(e.id),
-                            avatar: Icon(foodIcon(e.kind), size: 18),
-                            label: Text(mapEventTitle(context, e)),
-                            selectedColor: foodColor(e.kind)
-                                .withValues(alpha: .5),
-                            showCheckmark: false,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Material(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(18),
-                  onTap: () => _openEvent(event.id),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: foodColor(event.kind),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Icon(
-                            foodIcon(event.kind),
-                            color: WelcomePalette.navy,
-                            size: 30,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                mapEventTitle(context, event),
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              if (!_home.area.isFallback)
-                                Text(
-                                  event.distanceKm(_home.area) < 1
-                                      ? l.eventSameArea
-                                      : l.homeDistance(
-                                          number.format(
-                                            event.distanceKm(_home.area),
-                                          ),
-                                        ),
-                                ),
-                              Text(
-                                l.jajanMemberCount(
-                                  event.members,
-                                  event.capacity,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(Icons.chevron_right_rounded),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              TextButton.icon(
-                onPressed: () => _openEvent(event.id),
-                icon: const Icon(Icons.arrow_forward_rounded),
-                label: Text(l.eventDetails),
-              ),
-            ],
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: _checkingCreate ? null : _openCreate,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: WelcomePalette.gold,
-                      foregroundColor: WelcomePalette.navy,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      side: const BorderSide(
-                        color: WelcomePalette.navy,
-                        width: 2,
-                      ),
-                    ),
-                    icon: const Icon(Icons.add_rounded),
-                    label: Text(
-                      _checkingCreate ? l.jajanCheckingActive : l.homeCreate,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                OutlinedButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ChatInboxView(uid: widget.auth.user!.uid),
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 13,
-                      horizontal: 14,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
                     children: [
-                      const Icon(Icons.groups_rounded),
-                      Text(l.chatInbox),
+                      Expanded(
+                        child: Text(
+                          l.homeNearby,
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w900,
+                            color: WelcomePalette.navy,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: l.eventRefresh,
+                        onPressed: waiting ? null : _home.loadEvents,
+                        icon: const Icon(Icons.refresh_rounded),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  if (waiting) const LinearProgressIndicator(),
+                  if (_home.area.isFallback) ...[
+                    const SizedBox(height: 8),
+                    _locationControls(context),
+                  ],
+                  if (_home.recoveringCancellations) Text(l.eventCleaningUp),
+                  if (_home.cancellationError != null)
+                    TextButton(
+                      onPressed: _home.recoveringCancellations
+                          ? null
+                          : _home.resumeCancellations,
+                      child: Text(l.message(_home.cancellationError!)),
+                    ),
+                  if (_home.eventsError != null)
+                    TextButton.icon(
+                      onPressed: waiting ? null : _home.loadEvents,
+                      icon: const Icon(Icons.cloud_off_rounded),
+                      label: Text(
+                        l.message(_home.eventsError!),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  if (event == null) ...[
+                    const SizedBox(height: 12),
+                    Icon(
+                      waiting
+                          ? Icons.travel_explore_rounded
+                          : Icons.ramen_dining_rounded,
+                      size: 42,
+                      color: WelcomePalette.navy,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      waiting
+                          ? l.homeFindingEvents
+                          : _home.eventsError != null
+                          ? l.homeEventsUnavailable
+                          : _home.area.isFallback
+                          ? l.homeAreaNeeded
+                          : l.homeNoEvents,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      _home.area.isFallback
+                          ? l.homeAreaNeededHint
+                          : _home.eventsError != null
+                          ? l.homeEventsUnavailableHint
+                          : l.homeNoEventsHint,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Color(0xFF53736F)),
+                    ),
+                  ] else ...[
+                    const SizedBox(height: 10),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final e in _home.events)
+                            NearbyJajanCard(
+                              event: e,
+                              area: _home.area,
+                              selected: e.id == event.id,
+                              onTap: () => _openEvent(e.id),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: _checkingCreate ? null : _openCreate,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: WelcomePalette.gold,
+                    foregroundColor: WelcomePalette.navy,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    side: const BorderSide(
+                      color: WelcomePalette.navy,
+                      width: 2,
+                    ),
+                  ),
+                  icon: const Icon(Icons.add_rounded),
+                  label: Text(
+                    _checkingCreate ? l.jajanCheckingActive : l.homeCreate,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              OutlinedButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ChatInboxView(uid: widget.auth.user!.uid),
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 14,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.groups_rounded),
+                    Text(l.chatInbox),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

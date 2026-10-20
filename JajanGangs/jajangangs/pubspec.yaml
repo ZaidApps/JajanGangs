@@ -70,6 +70,8 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
+    - assets/avatars/
+    - assets/avatars/motion/
     - assets/images/welcome_city.png
     - assets/branding/mascot.png
     - assets/audio/jajan_chime.wav

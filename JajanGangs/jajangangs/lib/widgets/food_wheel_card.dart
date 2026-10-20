@@ -1,3 +1,5 @@
+import 'game_dialog.dart';
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -111,7 +113,8 @@ class _FoodWheelCardState extends State<FoodWheelCard>
   Future<void> createRound() async {
     final yes = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => GameDialog(
+        icon: const Icon(Icons.casino_outlined),
         title: Text(context.l10n.dropWheelConfirm),
         actions: [
           TextButton(
@@ -334,7 +337,9 @@ class _FoodWheelCardState extends State<FoodWheelCard>
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.white70),
                   ),
-                  if (w.creator == widget.uid)
+                  if (w.creator == widget.uid ||
+                      (widget.event.creatorId == widget.uid &&
+                          !widget.event.memberIds.contains(w.creator)))
                     FilledButton.icon(
                       onPressed: enabled && w.uids.length >= 2
                           ? () => c.act(

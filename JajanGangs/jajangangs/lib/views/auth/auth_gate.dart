@@ -1,3 +1,4 @@
+import '../../widgets/game_dialog.dart';
 import '../../l10n/l10n.dart';
 
 import 'dart:async';
@@ -28,7 +29,7 @@ class _AuthGateState extends State<AuthGate> {
       if (!mounted || controller.page != AuthPage.complete) return false;
       return await showDialog<bool>(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (context) => GameDialog(
               icon: const Icon(Icons.campaign_rounded),
               title: Text(context.l10n.announcementPermissionTitle),
               content: Text(context.l10n.announcementPermissionBody),

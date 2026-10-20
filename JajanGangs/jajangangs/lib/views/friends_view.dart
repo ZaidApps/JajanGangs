@@ -4,6 +4,7 @@ import '../controllers/friends_controller.dart';
 import '../l10n/l10n.dart';
 import '../widgets/character_avatar.dart';
 import 'friend_profile_view.dart';
+import 'blocked_users_view.dart';
 
 class FriendsView extends StatelessWidget {
   const FriendsView({super.key, required this.uid});
@@ -17,6 +18,15 @@ class FriendsView extends StatelessWidget {
         backgroundColor: const Color(0xFF102C42),
         foregroundColor: Colors.white,
         title: Text(context.l10n.friendsTitle),
+        actions: [
+          IconButton(
+            tooltip: context.l10n.blockedUsers,
+            icon: const Icon(Icons.block_rounded),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => BlockedUsersView(uid: uid)),
+            ),
+          ),
+        ],
         bottom: TabBar(
           isScrollable: true,
           labelColor: const Color(0xFFFFC647),

@@ -29,7 +29,9 @@ class JajanDraft {
     required this.area,
     this.description = '',
     this.joinPolicy = 'private',
+    this.scheduledAt,
   });
+  final DateTime? scheduledAt;
   final String joinPolicy;
   bool get isPublic => joinPolicy == 'public';
   final String description;
@@ -39,6 +41,8 @@ class JajanDraft {
   final MapArea area;
   Map<String, dynamic> toJson() => {
     'id': id,
+    if (scheduledAt != null)
+      'scheduledAt': scheduledAt!.toUtc().toIso8601String(),
     'description': description,
     'joinPolicy': joinPolicy,
     'craving': craving.name,
@@ -49,6 +53,9 @@ class JajanDraft {
   };
   factory JajanDraft.fromJson(Map<String, dynamic> data) => JajanDraft(
     id: data['id'] as String,
+    scheduledAt: data['scheduledAt'] == null
+        ? null
+        : DateTime.parse(data['scheduledAt'] as String).toUtc(),
     joinPolicy: data['joinPolicy'] as String? ?? 'private',
     description: data['description'] as String? ?? '',
     craving: Craving.values.byName(data['craving'] as String),
@@ -71,12 +78,14 @@ class JajanEvent {
     required this.createdAt,
     this.description = '',
     this.joinPolicy = 'private',
+    this.scheduledAt,
     this.memberCount = 1,
     this.state = 'OPEN',
     this.creatorName,
     this.creatorAvatarId,
     this.memberIds = const [],
   });
+  final DateTime? scheduledAt;
   final String joinPolicy;
   bool get isPublic => joinPolicy == 'public';
   final String description;
@@ -91,7 +100,8 @@ class JajanEvent {
   final String? creatorName;
   final String? creatorAvatarId;
   final List<String> memberIds;
-  DateTime get expiresAt => createdAt.add(const Duration(minutes: 45));
+  DateTime get expiresAt =>
+      (scheduledAt ?? createdAt).add(const Duration(minutes: 45));
   bool get isActive =>
       [
         'OPEN',
@@ -108,6 +118,27 @@ class JajanEvent {
     memberCount,
     capacity,
     cravingKey: craving.key,
+    creatorName: creatorName,
+    creatorAvatarId: creatorAvatarId,
+    description: description,
     expiresAt: expiresAt,
+    scheduledAt: scheduledAt,
+  );
+
+  JajanEvent withCreatorAvatar(String avatarId) => JajanEvent(
+    id: id,
+    creatorId: creatorId,
+    craving: craving,
+    capacity: capacity,
+    area: area,
+    createdAt: createdAt,
+    scheduledAt: scheduledAt,
+    description: description,
+    joinPolicy: joinPolicy,
+    memberCount: memberCount,
+    state: state,
+    creatorName: creatorName,
+    creatorAvatarId: avatarId,
+    memberIds: memberIds,
   );
 }

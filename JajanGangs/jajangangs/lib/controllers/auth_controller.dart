@@ -14,6 +14,7 @@ class AuthController extends ChangeNotifier {
   final DateTime Function() _now;
   AuthPage page = AuthPage.welcome;
   AuthSession? user;
+  String bio = '';
   String? name;
   String? avatarId;
   String? error;
@@ -100,6 +101,7 @@ class AuthController extends ChangeNotifier {
       _generation++;
       _resolvedKey = null;
       user = null;
+      bio = '';
       name = null;
       avatarId = null;
       if (wasSignedIn) {
@@ -137,10 +139,11 @@ class AuthController extends ChangeNotifier {
             AuthValidation.name(name) == null) {
           final cleanName = AuthValidation.cleanName(name!);
           await gateway.saveProfile(session.uid, cleanName, avatarId ?? draft!);
-          profile = UserProfile(name: cleanName, avatarId: avatarId ?? draft);
+          profile = await gateway.readProfile(session.uid);
         }
       }
       if (_disposed || generation != _generation) return;
+      bio = profile?.bio ?? '';
       name = profile?.name ?? name;
       avatarId = profile?.avatarId;
       // Google users and old name-only profiles must choose their character.
@@ -206,9 +209,11 @@ class AuthController extends ChangeNotifier {
     String name,
     String email,
     String password,
-    String? selectedAvatar,
-  ) async {
+    String? selectedAvatar, {
+    String bio = '',
+  }) async {
     final validation =
+        (bio.trim().runes.length > 150 ? 'bioLong' : null) ??
         AuthValidation.name(name) ??
         AuthValidation.email(email) ??
         AuthValidation.password(password, creating: true) ??
@@ -224,6 +229,7 @@ class AuthController extends ChangeNotifier {
         email.trim(),
         password,
         selectedAvatar!,
+        bio: bio,
       ),
       registration: true,
     );
@@ -291,9 +297,14 @@ class AuthController extends ChangeNotifier {
     _emit();
   }
 
-  Future<void> saveProfile(String value, String? selectedAvatar) async {
+  Future<void> saveProfile(
+    String value,
+    String? selectedAvatar, {
+    String bio = '',
+  }) async {
     if (busy || user == null || !user!.verified || _disposed) return;
     final validation =
+        (bio.trim().runes.length > 150 ? 'bioLong' : null) ??
         AuthValidation.name(value) ??
         (AvatarCatalog.contains(selectedAvatar) ? null : 'avatarRequired');
     if (validation != null) {
@@ -311,8 +322,10 @@ class AuthController extends ChangeNotifier {
         uid,
         AuthValidation.cleanName(value),
         selectedAvatar!,
+        bio: bio,
       );
       if (!_disposed && generation == _generation) {
+        this.bio = bio.trim();
         name = AuthValidation.cleanName(value);
         avatarId = selectedAvatar;
         page = AuthPage.complete;

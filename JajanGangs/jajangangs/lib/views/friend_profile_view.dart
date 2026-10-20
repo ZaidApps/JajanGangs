@@ -1,3 +1,6 @@
+import '../widgets/game_dialog.dart';
+import '../widgets/adventure_header.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -5,6 +8,8 @@ import '../controllers/friend_profile_controller.dart';
 import '../l10n/l10n.dart';
 import '../widgets/character_avatar.dart';
 import 'food_passport_view.dart';
+import 'report_user_view.dart';
+import '../services/social_safety_service.dart';
 
 Future<void> showFriendProfile(
   BuildContext context, {
@@ -60,7 +65,8 @@ class _FriendProfileViewState extends State<FriendProfileView> {
   Future<void> remove() async {
     final yes = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => GameDialog(
+        icon: const Icon(Icons.person_remove_outlined),
         title: Text(context.l10n.friendRemove),
         content: Text(context.l10n.friendRemoveHint),
         actions: [
@@ -85,38 +91,33 @@ class _FriendProfileViewState extends State<FriendProfileView> {
     builder: (context, _) {
       final l = context.l10n;
       final f = c.friendship;
-      final enabled = c.confirmed && !c.busy;
+      final enabled = c.confirmed && c.blocksReady && !c.blocked && !c.busy;
       final source = widget.eventId ?? f?.data['sourceEventId'] as String?;
       return Scaffold(
-        backgroundColor: const Color(0xFF102C42),
+        backgroundColor: const Color(0xFFF1F6EC),
         appBar: AppBar(
-          backgroundColor: const Color(0xFF102C42),
-          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFFF1F6EC),
+          foregroundColor: const Color(0xFF102C42),
           title: Text(l.friendProfile),
         ),
         body: SafeArea(
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
-              Center(
-                child: CharacterAvatar(
+              AdventureHeader(
+                title: f?.name(c.uid) ?? widget.name,
+                subtitle: l.friendProfile,
+                icon: Icons.person_rounded,
+                leading: CharacterAvatar(
                   avatarId: f?.avatar(c.uid) ?? widget.avatar,
-                  size: 110,
+                  size: 72,
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                f?.name(c.uid) ?? widget.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFFFFC647),
-                ),
-              ),
-              const SizedBox(height: 24),
               Card(
-                color: const Color(0xFFFFFAEF),
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
@@ -137,7 +138,9 @@ class _FriendProfileViewState extends State<FriendProfileView> {
                           child: Text(l.retry),
                         ),
                       ],
-                      if (c.optimisticSent) ...[
+                      if (c.blocked) ...[
+                        Text(l.socialBlocked),
+                      ] else if (c.optimisticSent) ...[
                         FilledButton.icon(
                           onPressed: null,
                           icon: const Icon(Icons.check_rounded),
@@ -238,6 +241,73 @@ class _FriendProfileViewState extends State<FriendProfileView> {
                         ),
                       ],
                       const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        icon: const Icon(Icons.block_rounded),
+                        label: Text(c.ownBlocked ? l.unblockUser : l.blockUser),
+                        onPressed: !c.confirmed || !c.blocksReady || c.busy
+                            ? null
+                            : () async {
+                                final yes = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => GameDialog(
+                                    title: Text(
+                                      c.ownBlocked
+                                          ? l.unblockUser
+                                          : l.blockUser,
+                                    ),
+                                    content: Text(
+                                      c.ownBlocked
+                                          ? l.unblockHint
+                                          : l.blockHint,
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: Text(l.back),
+                                      ),
+                                      FilledButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
+                                        child: Text(
+                                          c.ownBlocked
+                                              ? l.unblockUser
+                                              : l.blockUser,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                if (!mounted || yes != true) return;
+                                await c.act(
+                                  () => c.ownBlocked
+                                      ? SocialSafetyService().unblock(
+                                          c.uid,
+                                          c.peer,
+                                        )
+                                      : SocialSafetyService().block(
+                                          c.uid,
+                                          c.peer,
+                                          widget.name,
+                                        ),
+                                );
+                              },
+                      ),
+                      TextButton.icon(
+                        onPressed: c.busy
+                            ? null
+                            : () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ReportUserView(
+                                    uid: c.uid,
+                                    peer: c.peer,
+                                    eventId: source,
+                                  ),
+                                ),
+                              ),
+                        icon: const Icon(Icons.flag_outlined),
+                        label: Text(l.reportUser),
+                      ),
                       Text(
                         l.friendPrivacy,
                         textAlign: TextAlign.center,

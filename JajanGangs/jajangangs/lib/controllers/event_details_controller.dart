@@ -1,4 +1,5 @@
 import '../services/jajan_progress_service.dart';
+import '../services/event_social_service.dart';
 
 import 'dart:async';
 
@@ -51,7 +52,7 @@ class EventDetailsController extends ChangeNotifier {
       : event!.expiresAt
             .difference(DateTime.now().toUtc())
             .inSeconds
-            .clamp(0, 2700);
+            .clamp(0, 7 * 24 * 60 * 60 + 2700);
   bool get canJoin =>
       confirmed &&
       requestLoaded &&
@@ -266,6 +267,24 @@ class EventDetailsController extends ChangeNotifier {
       actionError = e is AuthFailure ? e.message : 'eventStatusFailed';
     } finally {
       progressing = false;
+      _emit();
+    }
+  }
+
+  Future<bool> leave() async {
+    if (!confirmed || !isMember || isOwner || busy) return false;
+    busy = true;
+    actionError = null;
+    _emit();
+    try {
+      await EventSocialService().leave(id, uid);
+      requestStatus = null;
+      return true;
+    } catch (e) {
+      actionError = e is AuthFailure ? e.message : 'socialFailed';
+      return false;
+    } finally {
+      busy = false;
       _emit();
     }
   }

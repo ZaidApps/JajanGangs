@@ -1,0 +1,45 @@
+{
+  "generator": "Built-in image_gen",
+  "entries": {
+    "anime_01": {
+      "source": "output/avatar-motion/blink-aligned.png",
+      "prompt": "Approved aligned blink keyframe from the first sample; see output/avatar-motion/README.md."
+    },
+    "anime_02": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-a51c3a67-84ed-42c6-b268-e2cb8d7631c5.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close ONLY the eye on the viewer's LEFT for a playful wink; keep the other eye exactly open. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_03": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-3cf1bbb5-a784-4710-b645-7cb2b4f53bd6.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close BOTH eyes naturally for a gentle blink. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_04": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-538c0d89-811c-4b9b-8419-c97117204ce7.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close BOTH eyes naturally for a blink behind the glasses; preserve glasses exactly. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_05": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-badbac89-0a06-4363-9ed2-2f599c1b8ae0.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close ONLY the eye on the viewer's RIGHT for a playful wink; keep the other eye exactly open. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_06": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-e7e249f9-32e5-4414-bcdf-97d1f5b2fe3f.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close ONLY the eye on the viewer's LEFT for a confident wink; keep the other eye exactly open. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_07": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-27342c41-4719-4aa0-8ed4-b53d09f19710.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close BOTH eyes naturally for a calm gentle blink. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_08": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-b8e6fa2f-838c-4ada-a18e-682853b7a7da.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close BOTH eyes naturally for a cheerful blink behind the glasses; preserve glasses exactly. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_09": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-ce8e7b04-8589-41a9-a6d1-e25a25f01a8e.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close ONLY the eye on the viewer's RIGHT for a relaxed wink; keep the other eye exactly open. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    },
+    "anime_10": {
+      "source": "C:/Users/DELL/.codex/generated_images/01a0ddef-d1d5-7fa0-81eb-c15b130596f0/exec-24fc6257-3a99-4a76-9783-10cd04bcccdd.png",
+      "prompt": "Edit this exact avatar to produce one animation keyframe: close BOTH eyes naturally for a warm gentle blink. Change ONLY eyelids and the tiny skin area directly around eyes. Keep the exact same head position, face proportions, pose, mouth, eyebrows, hair, headwear, clothing, badge, background, colors and lighting. Pixel-aligned same composition is essential. No tilt, no movement, no redrawing other elements. Preserve the original person's identity and original circular frame. Single square image, no text."
+    }
+  }
+}

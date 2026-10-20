@@ -1,3 +1,6 @@
+import '../widgets/jajan_schedule_badge.dart';
+import '../widgets/game_dialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../services/gang_poll_service.dart';
@@ -7,6 +10,8 @@ import '../widgets/gang_poll_card.dart';
 import '../widgets/food_wheel_card.dart';
 import 'jajan_complete_view.dart';
 import 'friend_profile_view.dart';
+import 'event_details_view.dart';
+import '../models/home_map_state.dart';
 
 import 'package:flutter/material.dart';
 
@@ -119,7 +124,7 @@ class _GangChatViewState extends State<GangChatView>
       }
       final yes = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => GameDialog(
           title: Text(
             kind == 'wheel'
                 ? context.l10n.dropWheelConfirm
@@ -272,6 +277,25 @@ class _GangChatViewState extends State<GangChatView>
         appBar: AppBar(
           backgroundColor: ink,
           foregroundColor: Colors.white,
+          actions: [
+            if (c.allowed && c.event != null)
+              IconButton(
+                tooltip: l.eventDetails,
+                icon: const Icon(Icons.info_outline_rounded),
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => EventDetailsView(
+                        marker: c.event!.toMap(),
+                        area: MapArea.jakarta,
+                        uid: widget.uid,
+                      ),
+                    ),
+                  );
+                  if (mounted && !c.allowed) Navigator.of(context).pop();
+                },
+              ),
+          ],
           title: Text(
             l.chatTitle,
             style: const TextStyle(fontWeight: FontWeight.w900),
@@ -310,6 +334,10 @@ class _GangChatViewState extends State<GangChatView>
                                     fontWeight: FontWeight.w900,
                                     fontSize: 18,
                                   ),
+                                ),
+                                JajanScheduleBadge(
+                                  time: c.event?.scheduledAt,
+                                  compact: true,
                                 ),
                                 if (c.event?.state == 'ON_THE_WAY')
                                   Text(

@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/services.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
 
@@ -104,7 +105,10 @@ class _GameMapCanvasState extends State<GameMapCanvas>
     final code = Localizations.localeOf(context).languageCode;
     if (_language != code) {
       _language = code;
-      if (_ready) unawaited(_localizeMap());
+      if (_ready) {
+        unawaited(_localizeMap());
+        unawaited(_render());
+      }
     }
     _restartPulse();
   }
@@ -303,6 +307,17 @@ class _GameMapCanvasState extends State<GameMapCanvas>
             mb.PointAnnotationOptions(
               geometry: _point(event.latitude, event.longitude),
               image: bytes,
+              textField: event.scheduledAt == null
+                  ? null
+                  : context.l10n.jajanScheduledFor(
+                      DateFormat.MMMd(
+                        Localizations.localeOf(context).languageCode,
+                      ).add_Hm().format(event.scheduledAt!.toLocal()),
+                    ),
+              textSize: 11,
+              textColor: 0xFF584095,
+              textHaloColor: 0xFFFFFFFF,
+              textHaloWidth: 2,
               iconAnchor: mb.IconAnchor.BOTTOM,
               iconSize: event.id == selected ? .65 : .52,
             ),

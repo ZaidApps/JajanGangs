@@ -20,6 +20,7 @@ class FirebaseAuthGateway implements AuthGateway {
   final String Function()? languageCode;
   final _drafts = SharedPreferencesAsync();
   final _pendingAvatars = <String, String>{};
+  final _pendingBios = <String, String>{};
   FirebaseAuth? _auth;
   Future<void>? _initialization;
   Future<void>? _googleInitialization;
@@ -90,8 +91,9 @@ class FirebaseAuthGateway implements AuthGateway {
     String name,
     String email,
     String password,
-    String avatarId,
-  ) => _guard(() async {
+    String avatarId, {
+    String bio = '',
+  }) => _guard(() async {
     if (!AvatarCatalog.contains(avatarId))
       throw const AuthFailure('avatarRequired');
     final result = await auth.createUserWithEmailAndPassword(
@@ -100,10 +102,12 @@ class FirebaseAuthGateway implements AuthGateway {
     );
     final uid = result.user!.uid;
     _pendingAvatars[uid] = avatarId;
+    _pendingBios[uid] = bio.trim();
     // A private per-account draft survives the email-verification round trip.
     // Never write unverified profiles or store credentials in preferences.
     try {
       await _drafts.setString('registration_avatar_$uid', avatarId);
+      await _drafts.setString('registration_bio_$uid', bio.trim());
     } catch (_) {}
     // Persist the name in Auth first; verified users get a Firestore profile later.
     await result.user!.updateDisplayName(name);
@@ -176,6 +180,7 @@ class FirebaseAuthGateway implements AuthGateway {
     final name = data['name'];
     final avatar = data['avatarId'];
     return UserProfile(
+      bio: data['bio'] as String? ?? '',
       name: name is String && AuthValidation.name(name) == null ? name : null,
       avatarId: avatar is String && AvatarCatalog.contains(avatar)
           ? avatar
@@ -194,30 +199,83 @@ class FirebaseAuthGateway implements AuthGateway {
   }
 
   @override
-  Future<void> saveProfile(String uid, String name, String avatarId) => _guard(
-    () async {
-      if (!AvatarCatalog.contains(avatarId))
-        throw const AuthFailure('avatarRequired');
-      final invalidName = AuthValidation.name(name);
-      if (invalidName != null) throw AuthFailure(invalidName);
-      final reference = FirebaseFirestore.instance.collection('users').doc(uid);
-      await FirebaseFirestore.instance
-          .runTransaction((transaction) async {
-            final existing = await transaction.get(reference);
-            transaction.set(reference, {
-              'name': AuthValidation.cleanName(name),
-              'avatarId': avatarId,
-              if (!existing.exists) 'createdAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            }, SetOptions(merge: true));
-          })
-          .timeout(const Duration(seconds: 20));
-      _pendingAvatars.remove(uid);
+  Future<void> saveProfile(
+    String uid,
+    String name,
+    String avatarId, {
+    String? bio,
+  }) => _guard(() async {
+    if (!AvatarCatalog.contains(avatarId))
+      throw const AuthFailure('avatarRequired');
+    String? draftBio = _pendingBios[uid];
+    if (bio == null) {
       try {
-        await _drafts.remove('registration_avatar_$uid');
+        draftBio ??= await _drafts.getString('registration_bio_$uid');
       } catch (_) {}
-    },
-  );
+    }
+    final suppliedBio = bio ?? draftBio;
+    if (suppliedBio != null && suppliedBio.trim().runes.length > 150)
+      throw const AuthFailure('bioLong');
+    final invalidName = AuthValidation.name(name);
+    if (invalidName != null) throw AuthFailure(invalidName);
+    final db = FirebaseFirestore.instance;
+    final reference = db.collection('users').doc(uid);
+    await db
+        .runTransaction((transaction) async {
+          final existing = await transaction.get(reference);
+          DocumentReference<Map<String, dynamic>>? hostedEvent;
+          // Use the one-active-event slot, not a collection query or listener.
+          // Read everything before writing so profile + event update atomically.
+          if (existing.exists && existing.data()?['avatarId'] != avatarId) {
+            final slot = await transaction.get(
+              db.collection('active_jajan_slots').doc(uid),
+            );
+            final eventId = slot.data()?['eventId'];
+            if (eventId is String && eventId.isNotEmpty) {
+              final eventRef = db.collection('jajan_events').doc(eventId);
+              final event = (await transaction.get(eventRef)).data();
+              final createdAt = event?['scheduledAt'] ?? event?['createdAt'];
+              final duration = event?['durationMinutes'];
+              if (event?['creatorId'] == uid &&
+                  const [
+                    'OPEN',
+                    'DECIDING',
+                    'DESTINATION_SELECTED',
+                    'ON_THE_WAY',
+                  ].contains(event?['state']) &&
+                  createdAt is Timestamp &&
+                  duration is int &&
+                  createdAt
+                      .toDate()
+                      .add(Duration(minutes: duration))
+                      .isAfter(DateTime.now()) &&
+                  event?['creatorAvatarId'] != avatarId) {
+                hostedEvent = eventRef;
+              }
+            }
+          }
+          transaction.set(reference, {
+            'name': AuthValidation.cleanName(name),
+            'avatarId': avatarId,
+            if (suppliedBio != null) 'bio': suppliedBio.trim(),
+            if (!existing.exists) 'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+          if (hostedEvent != null) {
+            transaction.update(hostedEvent, {
+              'creatorAvatarId': avatarId,
+              'updatedAt': FieldValue.serverTimestamp(),
+            });
+          }
+        })
+        .timeout(const Duration(seconds: 20));
+    _pendingAvatars.remove(uid);
+    _pendingBios.remove(uid);
+    try {
+      await _drafts.remove('registration_avatar_$uid');
+      await _drafts.remove('registration_bio_$uid');
+    } catch (_) {}
+  });
   @override
   Future<void> signOut() => _guard(() async {
     await auth.signOut();

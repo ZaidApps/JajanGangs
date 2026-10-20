@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/auth_session.dart';
+import 'social_safety_service.dart';
 
 class FriendsService {
   final db = FirebaseFirestore.instance;
@@ -38,6 +39,7 @@ class FriendsService {
     final version = db.collection('users').doc().id;
     await db
         .runTransaction((tx) async {
+          await SocialSafetyService().requireUnblocked(tx, uid, peer);
           final existing = await tx.get(relation(uid, peer));
           if (['REQUESTED', 'ACCEPTED'].contains(existing.data()?['status']))
             return;
@@ -97,6 +99,8 @@ class FriendsService {
     requireUser(uid);
     await db
         .runTransaction((tx) async {
+          if (target == 'ACCEPTED')
+            await SocialSafetyService().requireUnblocked(tx, uid, peer);
           final current = await tx.get(relation(uid, peer));
           final d = current.data();
           if (d == null) throw const AuthFailure('friendUnavailable');

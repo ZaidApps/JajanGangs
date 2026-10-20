@@ -875,7 +875,7 @@ abstract class AppLocalizations {
   /// No description provided for @avatarHint.
   ///
   /// In en, this message translates to:
-  /// **'Choose one of these 10 little weirdos to represent you.'**
+  /// **'Choose your character for the next food adventure.'**
   String get avatarHint;
 
   /// No description provided for @avatarRequired.
@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @jajanExpiryHint.
   ///
   /// In en, this message translates to:
-  /// **'Starts OPEN and expires 45 minutes after creation.'**
+  /// **'Starts OPEN and expires 45 minutes after the chosen start time.'**
   String get jajanExpiryHint;
 
   /// No description provided for @jajanLocationRequired.
@@ -1151,7 +1151,7 @@ abstract class AppLocalizations {
   /// No description provided for @jajanLocationTimeout.
   ///
   /// In en, this message translates to:
-  /// **'Finding your area took too long. Check that location services are on, then tap Create Jajan to try again.'**
+  /// **'Your phone could not find a recent area. Check Location and Wi-Fi or mobile data, then tap Create Jajan to retry. Your form is kept.'**
   String get jajanLocationTimeout;
 
   /// No description provided for @jajanLocationUnavailable.
@@ -1421,7 +1421,7 @@ abstract class AppLocalizations {
   /// No description provided for @jajanAlreadyActive.
   ///
   /// In en, this message translates to:
-  /// **'You already have an active Jajan. Complete or cancel it, or wait for it to expire before creating another.'**
+  /// **'You already have an active or scheduled Jajan. Complete or cancel it, or wait for it to expire before creating another.'**
   String get jajanAlreadyActive;
 
   /// No description provided for @jajanActiveCheckFailed.
@@ -2557,6 +2557,600 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable notifications'**
   String get announcementEnable;
+
+  /// No description provided for @inviteFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get inviteFriends;
+
+  /// No description provided for @inviteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get inviteAction;
+
+  /// No description provided for @inviteSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited'**
+  String get inviteSent;
+
+  /// No description provided for @inviteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a friend to this Jajan. Public events allow joining directly; private events still need host approval. One invitation per friend per event.'**
+  String get inviteHint;
+
+  /// No description provided for @inviteEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add some friends first, then invite them to jajan!'**
+  String get inviteEmpty;
+
+  /// No description provided for @inviteNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Your friend invited you to a Jajan. Tap to view and join!'**
+  String get inviteNotification;
+
+  /// No description provided for @leaveJajan.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Jajan'**
+  String get leaveJajan;
+
+  /// No description provided for @leaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your spot will become available and you will lose access to this chat. Your previous messages and activity submissions will remain. Leave this Jajan?'**
+  String get leaveHint;
+
+  /// No description provided for @leaveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You left this Jajan.'**
+  String get leaveSuccess;
+
+  /// No description provided for @leaveHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosts must cancel their event instead of leaving.'**
+  String get leaveHost;
+
+  /// No description provided for @socialFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not complete this action. Check your connection and try again.'**
+  String get socialFailed;
+
+  /// No description provided for @socialBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend requests and invitations are unavailable between these accounts.'**
+  String get socialBlocked;
+
+  /// No description provided for @socialLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get socialLoadMore;
+
+  /// No description provided for @blockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Block user'**
+  String get blockUser;
+
+  /// No description provided for @unblockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get unblockUser;
+
+  /// No description provided for @blockHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking removes your friendship and prevents new friend requests and invitations between you. You may still see each other in shared Jajans and their group chats. Block this person?'**
+  String get blockHint;
+
+  /// No description provided for @unblockHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblocking allows friend requests again. Your previous friendship will not be restored automatically.'**
+  String get unblockHint;
+
+  /// No description provided for @blockedUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked users'**
+  String get blockedUsers;
+
+  /// No description provided for @blockedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not blocked anyone.'**
+  String get blockedEmpty;
+
+  /// No description provided for @reportUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Report user'**
+  String get reportUser;
+
+  /// No description provided for @reportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what happened. Your report is private and will be available to the Jajan Gangs team for review. Reporting does not automatically block or penalize this person.'**
+  String get reportHint;
+
+  /// No description provided for @reportDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened? (optional)'**
+  String get reportDetails;
+
+  /// No description provided for @reportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit report'**
+  String get reportSubmit;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your report has been submitted. Thank you.'**
+  String get reportSent;
+
+  /// No description provided for @reportReason_spam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam or scams'**
+  String get reportReason_spam;
+
+  /// No description provided for @reportReason_harassment.
+  ///
+  /// In en, this message translates to:
+  /// **'Harassment or bullying'**
+  String get reportReason_harassment;
+
+  /// No description provided for @reportReason_unsafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsafe behavior'**
+  String get reportReason_unsafe;
+
+  /// No description provided for @reportReason_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportReason_other;
+
+  /// No description provided for @inviteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The invitation could not be confirmed. Check your connection and tap Invite to retry.'**
+  String get inviteFailed;
+
+  /// No description provided for @profileTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next delicious adventure starts here.'**
+  String get profileTagline;
+
+  /// No description provided for @passportEditorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A little memory. A great bite. Make it yours.'**
+  String get passportEditorHint;
+
+  /// No description provided for @chatInboxHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gangs, good food and great conversations.'**
+  String get chatInboxHint;
+
+  /// No description provided for @chatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete from my chats'**
+  String get chatDelete;
+
+  /// No description provided for @chatDeleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This hides the chat for you until a new message arrives. You remain a member and everyone keeps their messages.'**
+  String get chatDeleteHint;
+
+  /// No description provided for @chatDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not hide this chat. Check your connection and try again.'**
+  String get chatDeleteFailed;
+
+  /// No description provided for @chatHiddenEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No visible chats. Hidden chats return when a new message arrives.'**
+  String get chatHiddenEmpty;
+
+  /// No description provided for @bioLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio (optional)'**
+  String get bioLabel;
+
+  /// No description provided for @bioHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A little about you and the food you love…'**
+  String get bioHint;
+
+  /// No description provided for @bioLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your bio to 150 characters or fewer.'**
+  String get bioLong;
+
+  /// No description provided for @profileEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEdit;
+
+  /// No description provided for @profileSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save profile'**
+  String get profileSave;
+
+  /// No description provided for @pgTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Gangs'**
+  String get pgTitle;
+
+  /// No description provided for @pgCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Gang'**
+  String get pgCreate;
+
+  /// No description provided for @pgTemporary.
+  ///
+  /// In en, this message translates to:
+  /// **'Jajan chats'**
+  String get pgTemporary;
+
+  /// No description provided for @pgIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Your people. Your food adventures. A gang that stays.'**
+  String get pgIntro;
+
+  /// No description provided for @pgName.
+  ///
+  /// In en, this message translates to:
+  /// **'Gang name'**
+  String get pgName;
+
+  /// No description provided for @pgManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage gang'**
+  String get pgManage;
+
+  /// No description provided for @pgInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a gang name of 1–40 characters and check your input.'**
+  String get pgInvalid;
+
+  /// No description provided for @pgError.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not finish that. Check your connection and try again.'**
+  String get pgError;
+
+  /// No description provided for @pgFull.
+  ///
+  /// In en, this message translates to:
+  /// **'This gang is full. Ask the owner to increase its member limit.'**
+  String get pgFull;
+
+  /// No description provided for @pgFriendsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'You must still be friends with the inviter, and they must still belong to this gang.'**
+  String get pgFriendsOnly;
+
+  /// No description provided for @pgUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This gang is unavailable or you are no longer a member.'**
+  String get pgUnavailable;
+
+  /// No description provided for @pgTransferFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer ownership to another member before leaving.'**
+  String get pgTransferFirst;
+
+  /// No description provided for @pgCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'The limit cannot be lower than the current number of members.'**
+  String get pgCapacity;
+
+  /// No description provided for @pgEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your permanent gangs will appear here. Create one and invite your friends!'**
+  String get pgEmpty;
+
+  /// No description provided for @pgInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Gang invitation'**
+  String get pgInvite;
+
+  /// No description provided for @pgInviteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept to join this permanent gang and start chatting. Pending invitations do not reserve a place.'**
+  String get pgInviteHint;
+
+  /// No description provided for @pgInviteHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'This invitation has already been answered. Accepted gangs are in My Gangs.'**
+  String get pgInviteHandled;
+
+  /// No description provided for @pgInviteNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been invited to a permanent gang.'**
+  String get pgInviteNotification;
+
+  /// No description provided for @pgMessageNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'New message in your permanent gang.'**
+  String get pgMessageNotification;
+
+  /// No description provided for @pgInviteFriendsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite your friends to this gang. They choose whether to accept.'**
+  String get pgInviteFriendsHint;
+
+  /// No description provided for @pgOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get pgOwner;
+
+  /// No description provided for @pgMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Members & invitations'**
+  String get pgMembersTitle;
+
+  /// No description provided for @pgTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer ownership'**
+  String get pgTransfer;
+
+  /// No description provided for @pgRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get pgRemove;
+
+  /// No description provided for @pgMemberConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This changes the member’s role or access to the gang. Continue?'**
+  String get pgMemberConfirm;
+
+  /// No description provided for @pgDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete gang'**
+  String get pgDelete;
+
+  /// No description provided for @pgDeleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this gang, its messages and invitations for everyone? This cannot be undone.'**
+  String get pgDeleteHint;
+
+  /// No description provided for @pgLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave gang'**
+  String get pgLeave;
+
+  /// No description provided for @pgLeaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You will lose access to this chat. A friend in the gang must invite you again to rejoin.'**
+  String get pgLeaveHint;
+
+  /// No description provided for @pgDeleteRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish deleting gang'**
+  String get pgDeleteRetry;
+
+  /// No description provided for @pgMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message…'**
+  String get pgMessage;
+
+  /// No description provided for @pgSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send message'**
+  String get pgSend;
+
+  /// No description provided for @pgHiddenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden gangs return when a new message arrives.'**
+  String get pgHiddenHint;
+
+  /// No description provided for @pgMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}/{limit} members'**
+  String pgMembers(int count, int limit);
+
+  /// No description provided for @pgAlreadyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Already a member'**
+  String get pgAlreadyMember;
+
+  /// No description provided for @pgInvitedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited you'**
+  String get pgInvitedBy;
+
+  /// No description provided for @avatarAnime01.
+  ///
+  /// In en, this message translates to:
+  /// **'Noodle Adventurer'**
+  String get avatarAnime01;
+
+  /// No description provided for @avatarAnime02.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunny Foodie'**
+  String get avatarAnime02;
+
+  /// No description provided for @avatarAnime03.
+  ///
+  /// In en, this message translates to:
+  /// **'Cafe Explorer'**
+  String get avatarAnime03;
+
+  /// No description provided for @avatarAnime04.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight Gamer'**
+  String get avatarAnime04;
+
+  /// No description provided for @avatarAnime05.
+  ///
+  /// In en, this message translates to:
+  /// **'Street Food Scout'**
+  String get avatarAnime05;
+
+  /// No description provided for @avatarAnime06.
+  ///
+  /// In en, this message translates to:
+  /// **'Spicy Sidekick'**
+  String get avatarAnime06;
+
+  /// No description provided for @avatarAnime07.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekend Wanderer'**
+  String get avatarAnime07;
+
+  /// No description provided for @avatarAnime08.
+  ///
+  /// In en, this message translates to:
+  /// **'Sweet Treat Hunter'**
+  String get avatarAnime08;
+
+  /// No description provided for @avatarAnime09.
+  ///
+  /// In en, this message translates to:
+  /// **'Chill Challenger'**
+  String get avatarAnime09;
+
+  /// No description provided for @avatarAnime10.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Foodie'**
+  String get avatarAnime10;
+
+  /// No description provided for @avatarPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet your character'**
+  String get avatarPreviewTitle;
+
+  /// No description provided for @avatarPreviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A little personality for your next food adventure.'**
+  String get avatarPreviewHint;
+
+  /// No description provided for @avatarUseCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose this character'**
+  String get avatarUseCharacter;
+
+  /// No description provided for @jajanWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When shall we Jajan?'**
+  String get jajanWhen;
+
+  /// No description provided for @jajanNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get jajanNow;
+
+  /// No description provided for @jajanLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get jajanLater;
+
+  /// No description provided for @jajanChooseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date & time'**
+  String get jajanChooseTime;
+
+  /// No description provided for @jajanScheduleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan 15 minutes to 7 days ahead. Members can join and chat right away.'**
+  String get jajanScheduleHint;
+
+  /// No description provided for @jajanScheduleInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a start time at least 15 minutes and no more than 7 days from now.'**
+  String get jajanScheduleInvalid;
+
+  /// No description provided for @jajanScheduledLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get jajanScheduledLabel;
+
+  /// No description provided for @jajanScheduledFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled · {time}'**
+  String jajanScheduledFor(String time);
+
+  /// No description provided for @jajanExpiresOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires {time}'**
+  String jajanExpiresOn(String time);
 }
 
 class _AppLocalizationsDelegate

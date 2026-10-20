@@ -1,3 +1,6 @@
+import '../widgets/game_dialog.dart';
+import '../widgets/adventure_header.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -44,6 +47,41 @@ class _FoodPassportViewState extends State<FoodPassportView> {
       ),
     );
     if (saved == true && mounted) c.load(reset: true);
+  }
+
+  final deleting = <String>{};
+  Future<void> deleteMemory(FoodMemory memory) async {
+    if (!c.mine || deleting.contains(memory.id)) return;
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (context) => GameDialog(
+        icon: const Icon(Icons.delete_outline_rounded),
+        title: Text(context.l10n.passportDelete),
+        content: Text(context.l10n.passportDeleteHint),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(context.l10n.back),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(context.l10n.passportDelete),
+          ),
+        ],
+      ),
+    );
+    if (yes != true || !mounted) return;
+    setState(() => deleting.add(memory.id));
+    try {
+      await FoodPassportService().delete(widget.ownerId, memory);
+      if (mounted) c.load(reset: true);
+    } catch (_) {
+      if (mounted)
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(context.l10n.passportError)));
+    } finally {
+      if (mounted) setState(() => deleting.remove(memory.id));
+    }
   }
 
   @override
@@ -162,10 +200,41 @@ class _FoodPassportViewState extends State<FoodPassportView> {
                             ),
                           ),
                           if (c.mine)
-                            IconButton(
-                              tooltip: l.passportEdit,
-                              onPressed: () => edit(memory),
-                              icon: const Icon(Icons.edit_rounded),
+                            PopupMenuButton<String>(
+                              enabled: !deleting.contains(memory.id),
+                              icon: deleting.contains(memory.id)
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(Icons.more_horiz_rounded),
+                              onSelected: (value) => value == 'delete'
+                                  ? deleteMemory(memory)
+                                  : edit(memory),
+                              itemBuilder: (_) => [
+                                PopupMenuItem(
+                                  value: 'edit',
+                                  child: ListTile(
+                                    leading: const Icon(Icons.edit_outlined),
+                                    title: Text(l.passportEdit),
+                                    contentPadding: EdgeInsets.zero,
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  value: 'delete',
+                                  child: ListTile(
+                                    leading: const Icon(
+                                      Icons.delete_outline_rounded,
+                                      color: Color(0xFFB44742),
+                                    ),
+                                    title: Text(l.passportDelete),
+                                    contentPadding: EdgeInsets.zero,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       ),
@@ -319,7 +388,8 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
   Future<void> remove() async {
     final yes = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => GameDialog(
+        icon: const Icon(Icons.delete_outline_rounded),
         title: Text(context.l10n.passportDelete),
         content: Text(context.l10n.passportDeleteHint),
         actions: [
@@ -349,6 +419,26 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
     }
   }
 
+  InputDecoration fieldDecoration(String label, IconData icon) =>
+      InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: const Color(0xFF158276)),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 20,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: Color(0xFFDDE7DF)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: Color(0xFFDDE7DF)),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -356,43 +446,83 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
     return PopScope(
       canPop: !busy,
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFFAEF),
+        backgroundColor: const Color(0xFFF5F4EC),
         appBar: AppBar(
+          backgroundColor: const Color(0xFFF5F4EC),
           title: Text(widget.memory == null ? l.passportAdd : l.passportEdit),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 12),
+            child: FilledButton.icon(
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFFFFCD61),
+                foregroundColor: const Color(0xFF102C42),
+                padding: const EdgeInsets.symmetric(vertical: 17),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: busy ? null : save,
+              icon: busy
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.check_circle_rounded),
+              label: Text(
+                l.passportSave,
+                style: const TextStyle(fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
         ),
         body: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Icon(
-              Icons.local_dining_rounded,
-              size: 64,
-              color: Color(0xFF137F75),
+            AdventureHeader(
+              title: l.passportTitle,
+              subtitle: l.passportEditorHint,
+              icon: Icons.restaurant_menu_rounded,
             ),
+            const SizedBox(height: 24),
             TextField(
               controller: restaurant,
               enabled: !busy,
               maxLength: 80,
-              decoration: InputDecoration(labelText: l.passportRestaurant),
+              decoration: fieldDecoration(
+                l.passportRestaurant,
+                Icons.storefront_rounded,
+              ),
             ),
             TextField(
               controller: area,
               enabled: !busy,
               maxLength: 80,
-              decoration: InputDecoration(
-                labelText: l.passportArea,
-                prefixIcon: const Icon(Icons.place_outlined),
-              ),
+              decoration: fieldDecoration(l.passportArea, Icons.place_outlined),
             ),
             TextField(
               controller: dish,
               enabled: !busy,
               maxLength: 80,
-              decoration: InputDecoration(labelText: l.passportDish),
+              decoration: fieldDecoration(
+                l.passportDish,
+                Icons.ramen_dining_rounded,
+              ),
             ),
-            DumplingRating(
-              value: rating,
-              onChanged: busy ? null : (v) => setState(() => rating = v),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFE8A9),
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: DumplingRating(
+                value: rating,
+                onChanged: busy ? null : (v) => setState(() => rating = v),
+              ),
             ),
+            const SizedBox(height: 10),
             if (rating > 0)
               Text(
                 labels[rating - 1],
@@ -408,14 +538,30 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
               enabled: !busy,
               maxLength: 200,
               maxLines: 3,
-              decoration: InputDecoration(labelText: l.passportReview),
+              decoration: fieldDecoration(
+                l.passportReview,
+                Icons.edit_note_rounded,
+              ),
             ),
             SwitchListTile(
+              tileColor: const Color(0xFFE4EFE8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              secondary: const Icon(
+                Icons.favorite_rounded,
+                color: Color(0xFF158276),
+              ),
               value: again,
               onChanged: busy ? null : (v) => setState(() => again = v),
               title: Text(l.passportAgain),
             ),
+            const SizedBox(height: 12),
             ListTile(
+              tileColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               title: Text(l.passportDate),
               subtitle: Text(
                 DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
@@ -435,6 +581,7 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
                         setState(() => visited = date);
                     },
             ),
+            const SizedBox(height: 20),
             Text(
               l.passportVisibility,
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -468,11 +615,7 @@ class _FoodMemoryEditorState extends State<FoodMemoryEditor> {
               ),
             if (busy) const LinearProgressIndicator(),
             const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: busy ? null : save,
-              icon: const Icon(Icons.check),
-              label: Text(l.passportSave),
-            ),
+
             if (widget.memory != null)
               TextButton(
                 onPressed: busy ? null : remove,

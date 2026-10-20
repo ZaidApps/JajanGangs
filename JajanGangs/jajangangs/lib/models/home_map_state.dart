@@ -25,7 +25,11 @@ class MapJajan {
     this.members,
     this.capacity, {
     this.cravingKey,
+    this.creatorName,
+    this.creatorAvatarId,
+    this.description = '',
     this.expiresAt,
+    this.scheduledAt,
   });
   final String id;
   final FoodKind kind;
@@ -34,7 +38,11 @@ class MapJajan {
   final int members;
   final int capacity;
   final String? cravingKey;
+  final String? creatorName;
+  final String? creatorAvatarId;
+  final String description;
   final DateTime? expiresAt;
+  final DateTime? scheduledAt;
   bool get isDemo => cravingKey == null;
 
   double distanceKm(MapArea area) {

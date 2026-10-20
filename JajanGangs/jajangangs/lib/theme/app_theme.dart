@@ -24,6 +24,72 @@ abstract final class AppTheme {
       surface: AppColors.cream,
       onSurface: AppColors.ink,
     ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: AppColors.cream,
+      surfaceTintColor: Colors.transparent,
+      barrierColor: const Color(0xA6102639),
+      elevation: 14,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
+        side: const BorderSide(color: Color(0xFFD9E8DF)),
+      ),
+      titleTextStyle: const TextStyle(
+        color: Color(0xFF102C42),
+        fontSize: 22,
+        fontWeight: FontWeight.w900,
+      ),
+      contentTextStyle: const TextStyle(
+        color: Color(0xFF465E6B),
+        fontSize: 16,
+        height: 1.5,
+      ),
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.cream,
+      surfaceTintColor: Colors.transparent,
+      elevation: 12,
+      shadowColor: const Color(0x40102C42),
+      position: PopupMenuPosition.under,
+      menuPadding: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+        side: const BorderSide(color: Color(0xFFD6E5DD)),
+      ),
+      textStyle: const TextStyle(
+        color: Color(0xFF102C42),
+        fontSize: 15,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    menuTheme: MenuThemeData(
+      style: MenuStyle(
+        backgroundColor: const WidgetStatePropertyAll(AppColors.cream),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+        elevation: const WidgetStatePropertyAll(12),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+            side: const BorderSide(color: Color(0xFFD6E5DD)),
+          ),
+        ),
+      ),
+    ),
+    menuButtonTheme: MenuButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: const WidgetStatePropertyAll(Color(0xFF102C42)),
+        padding: const WidgetStatePropertyAll(
+          EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        ),
+        overlayColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.hovered) ||
+                  states.contains(WidgetState.focused) ||
+                  states.contains(WidgetState.pressed)
+              ? const Color(0x25158A79)
+              : null,
+        ),
+      ),
+    ),
     scaffoldBackgroundColor: AppColors.cream,
     textTheme: const TextTheme(
       headlineLarge: TextStyle(

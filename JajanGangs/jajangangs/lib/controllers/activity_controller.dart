@@ -42,7 +42,9 @@ class ActivityController extends ChangeNotifier {
                     stamp != null &&
                     stamp.toDate().isAfter(sound.foregroundSince) &&
                     !(data['type'] == 'message' &&
-                        data['eventId'] == sound.activeChat))
+                        data['eventId'] == sound.activeChat) &&
+                    !(data['type'] == 'gang_message' &&
+                        'gang:${data['gangId']}' == sound.activeChat))
                   chime = true;
               }
               _soundBaseline = true;

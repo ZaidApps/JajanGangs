@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../models/friendship.dart';
 import '../models/auth_session.dart';
 import '../services/friends_service.dart';
+import '../services/social_safety_service.dart';
 
 class FriendProfileController extends ChangeNotifier {
   FriendProfileController(this.uid, this.peer);
@@ -15,8 +16,48 @@ class FriendProfileController extends ChangeNotifier {
   String? error;
   bool loading = true, busy = false, confirmed = false, _disposed = false;
   StreamSubscription? _subscription;
+  final _blockSubscriptions = <StreamSubscription>[];
+  bool ownBlocked = false, otherBlocked = false, blocksReady = false;
+  bool get blocked => ownBlocked || otherBlocked;
   Timer? _timer;
   void start() {
+    for (final sub in _blockSubscriptions) {
+      sub.cancel();
+    }
+    _blockSubscriptions.clear();
+    blocksReady = false;
+    var loaded = 0;
+    for (final own in [true, false]) {
+      var received = false;
+      _blockSubscriptions.add(
+        SocialSafetyService()
+            .blockRef(own ? uid : peer, own ? peer : uid)
+            .snapshots()
+            .listen(
+              (doc) {
+                if (_disposed) return;
+                if (own) {
+                  ownBlocked = doc.exists;
+                } else {
+                  otherBlocked = doc.exists;
+                }
+                if (!received) {
+                  received = true;
+                  loaded++;
+                }
+                blocksReady = loaded == 2;
+                notifyListeners();
+              },
+              onError: (Object _) {
+                if (!_disposed) {
+                  blocksReady = false;
+                  error = 'socialFailed';
+                  notifyListeners();
+                }
+              },
+            ),
+      );
+    }
     _subscription?.cancel();
     _timer?.cancel();
     loading = true;
@@ -101,6 +142,9 @@ class FriendProfileController extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    for (final sub in _blockSubscriptions) {
+      sub.cancel();
+    }
     _timer?.cancel();
     _subscription?.cancel();
     super.dispose();

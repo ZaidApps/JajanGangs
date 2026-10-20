@@ -450,8 +450,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avatarChoose => 'Pick your character';
 
   @override
-  String get avatarHint =>
-      'Choose one of these 10 little weirdos to represent you.';
+  String get avatarHint => 'Choose your character for the next food adventure.';
 
   @override
   String get avatarRequired => 'Choose a character to continue.';
@@ -528,7 +527,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jajanExpiryHint =>
-      'Starts OPEN and expires 45 minutes after creation.';
+      'Starts OPEN and expires 45 minutes after the chosen start time.';
 
   @override
   String get jajanLocationRequired =>
@@ -611,7 +610,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jajanLocationTimeout =>
-      'Finding your area took too long. Check that location services are on, then tap Create Jajan to try again.';
+      'Your phone could not find a recent area. Check Location and Wi-Fi or mobile data, then tap Create Jajan to retry. Your form is kept.';
 
   @override
   String get jajanLocationUnavailable =>
@@ -780,7 +779,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jajanAlreadyActive =>
-      'You already have an active Jajan. Complete or cancel it, or wait for it to expire before creating another.';
+      'You already have an active or scheduled Jajan. Complete or cancel it, or wait for it to expire before creating another.';
 
   @override
   String get jajanActiveCheckFailed =>
@@ -1427,4 +1426,339 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get announcementEnable => 'Enable notifications';
+
+  @override
+  String get inviteFriends => 'Invite friends';
+
+  @override
+  String get inviteAction => 'Invite';
+
+  @override
+  String get inviteSent => 'Invited';
+
+  @override
+  String get inviteHint =>
+      'Invite a friend to this Jajan. Public events allow joining directly; private events still need host approval. One invitation per friend per event.';
+
+  @override
+  String get inviteEmpty =>
+      'Add some friends first, then invite them to jajan!';
+
+  @override
+  String get inviteNotification =>
+      'Your friend invited you to a Jajan. Tap to view and join!';
+
+  @override
+  String get leaveJajan => 'Leave Jajan';
+
+  @override
+  String get leaveHint =>
+      'Your spot will become available and you will lose access to this chat. Your previous messages and activity submissions will remain. Leave this Jajan?';
+
+  @override
+  String get leaveSuccess => 'You left this Jajan.';
+
+  @override
+  String get leaveHost => 'Hosts must cancel their event instead of leaving.';
+
+  @override
+  String get socialFailed =>
+      'We could not complete this action. Check your connection and try again.';
+
+  @override
+  String get socialBlocked =>
+      'Friend requests and invitations are unavailable between these accounts.';
+
+  @override
+  String get socialLoadMore => 'Load more';
+
+  @override
+  String get blockUser => 'Block user';
+
+  @override
+  String get unblockUser => 'Unblock';
+
+  @override
+  String get blockHint =>
+      'Blocking removes your friendship and prevents new friend requests and invitations between you. You may still see each other in shared Jajans and their group chats. Block this person?';
+
+  @override
+  String get unblockHint =>
+      'Unblocking allows friend requests again. Your previous friendship will not be restored automatically.';
+
+  @override
+  String get blockedUsers => 'Blocked users';
+
+  @override
+  String get blockedEmpty => 'You have not blocked anyone.';
+
+  @override
+  String get reportUser => 'Report user';
+
+  @override
+  String get reportHint =>
+      'Tell us what happened. Your report is private and will be available to the Jajan Gangs team for review. Reporting does not automatically block or penalize this person.';
+
+  @override
+  String get reportDetails => 'What happened? (optional)';
+
+  @override
+  String get reportSubmit => 'Submit report';
+
+  @override
+  String get reportSent => 'Your report has been submitted. Thank you.';
+
+  @override
+  String get reportReason_spam => 'Spam or scams';
+
+  @override
+  String get reportReason_harassment => 'Harassment or bullying';
+
+  @override
+  String get reportReason_unsafe => 'Unsafe behavior';
+
+  @override
+  String get reportReason_other => 'Something else';
+
+  @override
+  String get inviteFailed =>
+      'The invitation could not be confirmed. Check your connection and tap Invite to retry.';
+
+  @override
+  String get profileTagline => 'Your next delicious adventure starts here.';
+
+  @override
+  String get passportEditorHint =>
+      'A little memory. A great bite. Make it yours.';
+
+  @override
+  String get chatInboxHint => 'Your gangs, good food and great conversations.';
+
+  @override
+  String get chatDelete => 'Delete from my chats';
+
+  @override
+  String get chatDeleteHint =>
+      'This hides the chat for you until a new message arrives. You remain a member and everyone keeps their messages.';
+
+  @override
+  String get chatDeleteFailed =>
+      'Could not hide this chat. Check your connection and try again.';
+
+  @override
+  String get chatHiddenEmpty =>
+      'No visible chats. Hidden chats return when a new message arrives.';
+
+  @override
+  String get bioLabel => 'Bio (optional)';
+
+  @override
+  String get bioHint => 'A little about you and the food you love…';
+
+  @override
+  String get bioLong => 'Keep your bio to 150 characters or fewer.';
+
+  @override
+  String get profileEdit => 'Edit profile';
+
+  @override
+  String get profileSave => 'Save profile';
+
+  @override
+  String get pgTitle => 'My Gangs';
+
+  @override
+  String get pgCreate => 'Create Gang';
+
+  @override
+  String get pgTemporary => 'Jajan chats';
+
+  @override
+  String get pgIntro => 'Your people. Your food adventures. A gang that stays.';
+
+  @override
+  String get pgName => 'Gang name';
+
+  @override
+  String get pgManage => 'Manage gang';
+
+  @override
+  String get pgInvalid =>
+      'Enter a gang name of 1–40 characters and check your input.';
+
+  @override
+  String get pgError =>
+      'We could not finish that. Check your connection and try again.';
+
+  @override
+  String get pgFull =>
+      'This gang is full. Ask the owner to increase its member limit.';
+
+  @override
+  String get pgFriendsOnly =>
+      'You must still be friends with the inviter, and they must still belong to this gang.';
+
+  @override
+  String get pgUnavailable =>
+      'This gang is unavailable or you are no longer a member.';
+
+  @override
+  String get pgTransferFirst =>
+      'Transfer ownership to another member before leaving.';
+
+  @override
+  String get pgCapacity =>
+      'The limit cannot be lower than the current number of members.';
+
+  @override
+  String get pgEmpty =>
+      'Your permanent gangs will appear here. Create one and invite your friends!';
+
+  @override
+  String get pgInvite => 'Gang invitation';
+
+  @override
+  String get pgInviteHint =>
+      'Accept to join this permanent gang and start chatting. Pending invitations do not reserve a place.';
+
+  @override
+  String get pgInviteHandled =>
+      'This invitation has already been answered. Accepted gangs are in My Gangs.';
+
+  @override
+  String get pgInviteNotification =>
+      'You have been invited to a permanent gang.';
+
+  @override
+  String get pgMessageNotification => 'New message in your permanent gang.';
+
+  @override
+  String get pgInviteFriendsHint =>
+      'Invite your friends to this gang. They choose whether to accept.';
+
+  @override
+  String get pgOwner => 'Owner';
+
+  @override
+  String get pgMembersTitle => 'Members & invitations';
+
+  @override
+  String get pgTransfer => 'Transfer ownership';
+
+  @override
+  String get pgRemove => 'Remove member';
+
+  @override
+  String get pgMemberConfirm =>
+      'This changes the member’s role or access to the gang. Continue?';
+
+  @override
+  String get pgDelete => 'Delete gang';
+
+  @override
+  String get pgDeleteHint =>
+      'Delete this gang, its messages and invitations for everyone? This cannot be undone.';
+
+  @override
+  String get pgLeave => 'Leave gang';
+
+  @override
+  String get pgLeaveHint =>
+      'You will lose access to this chat. A friend in the gang must invite you again to rejoin.';
+
+  @override
+  String get pgDeleteRetry => 'Finish deleting gang';
+
+  @override
+  String get pgMessage => 'Type a message…';
+
+  @override
+  String get pgSend => 'Send message';
+
+  @override
+  String get pgHiddenHint => 'Hidden gangs return when a new message arrives.';
+
+  @override
+  String pgMembers(int count, int limit) {
+    return '$count/$limit members';
+  }
+
+  @override
+  String get pgAlreadyMember => 'Already a member';
+
+  @override
+  String get pgInvitedBy => 'Invited you';
+
+  @override
+  String get avatarAnime01 => 'Noodle Adventurer';
+
+  @override
+  String get avatarAnime02 => 'Sunny Foodie';
+
+  @override
+  String get avatarAnime03 => 'Cafe Explorer';
+
+  @override
+  String get avatarAnime04 => 'Midnight Gamer';
+
+  @override
+  String get avatarAnime05 => 'Street Food Scout';
+
+  @override
+  String get avatarAnime06 => 'Spicy Sidekick';
+
+  @override
+  String get avatarAnime07 => 'Weekend Wanderer';
+
+  @override
+  String get avatarAnime08 => 'Sweet Treat Hunter';
+
+  @override
+  String get avatarAnime09 => 'Chill Challenger';
+
+  @override
+  String get avatarAnime10 => 'Golden Foodie';
+
+  @override
+  String get avatarPreviewTitle => 'Meet your character';
+
+  @override
+  String get avatarPreviewHint =>
+      'A little personality for your next food adventure.';
+
+  @override
+  String get avatarUseCharacter => 'Choose this character';
+
+  @override
+  String get jajanWhen => 'When shall we Jajan?';
+
+  @override
+  String get jajanNow => 'Now';
+
+  @override
+  String get jajanLater => 'Later';
+
+  @override
+  String get jajanChooseTime => 'Choose date & time';
+
+  @override
+  String get jajanScheduleHint =>
+      'Plan 15 minutes to 7 days ahead. Members can join and chat right away.';
+
+  @override
+  String get jajanScheduleInvalid =>
+      'Choose a start time at least 15 minutes and no more than 7 days from now.';
+
+  @override
+  String get jajanScheduledLabel => 'Scheduled';
+
+  @override
+  String jajanScheduledFor(String time) {
+    return 'Scheduled · $time';
+  }
+
+  @override
+  String jajanExpiresOn(String time) {
+    return 'Expires $time';
+  }
 }

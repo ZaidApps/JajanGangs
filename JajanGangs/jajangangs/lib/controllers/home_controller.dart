@@ -24,6 +24,7 @@ class HomeController extends ChangeNotifier {
   final _service = JajanService();
   final _owned = <JajanEvent>[];
   final _nearby = <JajanEvent>[];
+  String? _savedOwnAvatar;
   bool _reloadRequested = false;
   Timer? _expiryTimer;
   MapArea area = MapArea.jakarta;
@@ -50,7 +51,13 @@ class HomeController extends ChangeNotifier {
     final real = {
       for (final e in [..._nearby, ..._owned]) e.id: e,
     };
-    events = real.values.map((e) => e.toMap()).toList();
+    events = real.values
+        .map(
+          (e) => e.creatorId == uid && _savedOwnAvatar != null
+              ? e.withCreatorAvatar(_savedOwnAvatar!).toMap()
+              : e.toMap(),
+        )
+        .toList();
     if (!events.any((e) => e.id == selectedId)) {
       selectedId = events.isEmpty ? '' : events.first.id;
     }
@@ -100,6 +107,15 @@ class HomeController extends ChangeNotifier {
         }
       }
     }
+  }
+
+  /// Called only after the profile/event transaction succeeds. Keeps an older
+  /// in-flight map fetch from restoring the previous local host portrait.
+  void updateOwnAvatar(String avatarId) {
+    if (_disposed || _savedOwnAvatar == avatarId) return;
+    _savedOwnAvatar = avatarId;
+    _rebuild();
+    notifyListeners();
   }
 
   Future<void> resumeCancellations() async {

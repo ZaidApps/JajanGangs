@@ -10,14 +10,20 @@ abstract interface class AuthGateway {
     String name,
     String email,
     String password,
-    String avatarId,
-  );
+    String avatarId, {
+    String bio = '',
+  });
   Future<void> google();
   Future<void> sendVerification();
   Future<void> refreshUser();
   Future<void> resetPassword(String email);
   Future<UserProfile?> readProfile(String uid);
   Future<String?> readRegistrationAvatar(String uid);
-  Future<void> saveProfile(String uid, String name, String avatarId);
+  Future<void> saveProfile(
+    String uid,
+    String name,
+    String avatarId, {
+    String? bio,
+  });
   Future<void> signOut();
 }

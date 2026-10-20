@@ -70,7 +70,12 @@ class JajanService {
         }
         if (page.docs.length < 20) break;
         final oldest = decode(page.docs.last);
-        if (oldest != null && !oldest.expiresAt.isAfter(DateTime.now().toUtc()))
+        if (oldest != null &&
+            oldest.createdAt.isBefore(
+              DateTime.now().toUtc().subtract(
+                const Duration(days: 7, minutes: 45),
+              ),
+            ))
           break;
         cursor = page.docs.last;
       }
@@ -127,6 +132,7 @@ class JajanService {
     MapArea area, {
     String description = '',
     String joinPolicy = 'public',
+    DateTime? scheduledAt,
   }) async {
     _requireUser(uid);
     if (area.isFallback ||
@@ -145,8 +151,10 @@ class JajanService {
       throw const AuthFailure('jajanSaveError');
     if (description.trim().runes.length > 150)
       throw const AuthFailure('descriptionTooLong');
+    validateSchedule(scheduledAt);
     final draft = JajanDraft(
       id: _db.collection('jajan_events').doc().id,
+      scheduledAt: scheduledAt?.toUtc(),
       description: description.trim(),
       joinPolicy: joinPolicy,
       craving: craving,
@@ -160,6 +168,15 @@ class JajanService {
       throw const AuthFailure('jajanDraftError');
     }
     return draft;
+  }
+
+  static void validateSchedule(DateTime? scheduledAt) {
+    if (scheduledAt == null) return;
+    final delay = scheduledAt.difference(DateTime.now().toUtc());
+    if (delay < const Duration(minutes: 15) ||
+        delay > const Duration(days: 7)) {
+      throw const AuthFailure('jajanScheduleInvalid');
+    }
   }
 
   Future<JajanEvent> create(String uid, JajanDraft draft) async {
@@ -205,6 +222,7 @@ class JajanService {
                 throw const AuthFailure('jajanSaveError');
               return;
             }
+            validateSchedule(draft.scheduledAt);
             final slotRef = slot(uid);
             final active = await transaction.get(slotRef);
             final previousId = active.data()?['eventId'] as String?;
@@ -249,6 +267,12 @@ class JajanService {
               'updatedAt': FieldValue.serverTimestamp(),
               // Expiry is computed from the trusted server-created timestamp.
               'durationMinutes': 45,
+              if (draft.scheduledAt != null) ...{
+                'scheduledAt': Timestamp.fromDate(draft.scheduledAt!.toUtc()),
+                'expiresAt': Timestamp.fromDate(
+                  draft.scheduledAt!.toUtc().add(const Duration(minutes: 45)),
+                ),
+              },
             });
           })
           .timeout(const Duration(seconds: 25));
@@ -269,6 +293,11 @@ class JajanService {
         await _preferences.remove(_key(uid));
       } catch (_) {}
       return event;
+    } on AuthFailure catch (e) {
+      if (e.message == 'jajanScheduleInvalid') {
+        await _preferences.remove(_key(uid));
+      }
+      rethrow;
     } on FirebaseException catch (e) {
       if (e.code == 'permission-denied') {
         await ensureCanCreate(uid, retryId: draft.id);
@@ -316,7 +345,7 @@ class JajanService {
       1,
     ].map((offset) => ((lng + offset + 9000) % 18000) - 9000).toList();
     final cutoff = Timestamp.fromDate(
-      DateTime.now().toUtc().subtract(const Duration(minutes: 45)),
+      DateTime.now().toUtc().subtract(const Duration(days: 7, minutes: 45)),
     );
     try {
       final results = await Future.wait([
@@ -362,6 +391,7 @@ class JajanService {
         memberCount: data['memberCount'] as int,
         state: data['state'] as String,
         createdAt: (data['createdAt'] as Timestamp).toDate().toUtc(),
+        scheduledAt: (data['scheduledAt'] as Timestamp?)?.toDate().toUtc(),
         area: MapArea(
           (area['latCell'] as num).toDouble() * .02,
           (area['lngCell'] as num).toDouble() * .02,

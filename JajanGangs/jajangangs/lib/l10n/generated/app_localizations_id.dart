@@ -455,7 +455,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get avatarHint =>
-      'Pilih satu dari 10 karakter lucu ini untuk mewakili kamu.';
+      'Pilih karaktermu untuk petualangan kuliner berikutnya.';
 
   @override
   String get avatarRequired => 'Pilih karakter untuk melanjutkan.';
@@ -532,7 +532,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get jajanExpiryHint =>
-      'Dimulai dengan status TERBUKA dan berakhir 45 menit setelah dibuat.';
+      'Dimulai dengan status TERBUKA dan kedaluwarsa 45 menit setelah waktu mulai yang dipilih.';
 
   @override
   String get jajanLocationRequired =>
@@ -615,7 +615,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get jajanLocationTimeout =>
-      'Pencarian area terlalu lama. Pastikan layanan lokasi aktif, lalu ketuk Buat Jajan untuk mencoba lagi.';
+      'Ponselmu belum menemukan area terkini. Periksa Lokasi dan Wi-Fi atau data seluler, lalu ketuk Buat Jajan untuk mencoba lagi. Isian formulirmu tetap tersimpan.';
 
   @override
   String get jajanLocationUnavailable =>
@@ -776,7 +776,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get jajanAlreadyActive =>
-      'Kamu sudah punya Jajan aktif. Selesaikan atau batalkan Jajan tersebut, atau tunggu hingga berakhir sebelum membuat yang baru.';
+      'Anda sudah memiliki Jajan aktif atau terjadwal. Selesaikan atau batalkan, atau tunggu hingga kedaluwarsa sebelum membuat yang baru.';
 
   @override
   String get jajanActiveCheckFailed =>
@@ -1417,4 +1417,340 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get announcementEnable => 'Aktifkan notifikasi';
+
+  @override
+  String get inviteFriends => 'Undang teman';
+
+  @override
+  String get inviteAction => 'Undang';
+
+  @override
+  String get inviteSent => 'Diundang';
+
+  @override
+  String get inviteHint =>
+      'Undang teman ke Jajan ini. Acara publik bisa langsung diikuti; acara privat tetap memerlukan persetujuan host. Satu undangan per teman untuk setiap acara.';
+
+  @override
+  String get inviteEmpty =>
+      'Tambahkan teman dulu, lalu undang mereka untuk jajan!';
+
+  @override
+  String get inviteNotification =>
+      'Temanmu mengundangmu ke Jajan. Ketuk untuk melihat dan bergabung!';
+
+  @override
+  String get leaveJajan => 'Keluar dari Jajan';
+
+  @override
+  String get leaveHint =>
+      'Tempatmu akan tersedia dan kamu tidak bisa lagi mengakses chat ini. Pesan dan pilihan aktivitas sebelumnya tetap tersimpan. Keluar dari Jajan ini?';
+
+  @override
+  String get leaveSuccess => 'Kamu telah keluar dari Jajan ini.';
+
+  @override
+  String get leaveHost => 'Host harus membatalkan acara, bukan keluar.';
+
+  @override
+  String get socialFailed =>
+      'Tindakan ini belum berhasil. Periksa koneksimu lalu coba lagi.';
+
+  @override
+  String get socialBlocked =>
+      'Permintaan pertemanan dan undangan tidak tersedia antara akun ini.';
+
+  @override
+  String get socialLoadMore => 'Muat lainnya';
+
+  @override
+  String get blockUser => 'Blokir pengguna';
+
+  @override
+  String get unblockUser => 'Buka blokir';
+
+  @override
+  String get blockHint =>
+      'Memblokir akan menghapus pertemanan dan mencegah permintaan pertemanan serta undangan baru di antara kalian. Kalian masih bisa bertemu di Jajan dan chat grup yang sama. Blokir pengguna ini?';
+
+  @override
+  String get unblockHint =>
+      'Membuka blokir memungkinkan permintaan pertemanan lagi. Pertemanan sebelumnya tidak otomatis dipulihkan.';
+
+  @override
+  String get blockedUsers => 'Pengguna diblokir';
+
+  @override
+  String get blockedEmpty => 'Kamu belum memblokir siapa pun.';
+
+  @override
+  String get reportUser => 'Laporkan pengguna';
+
+  @override
+  String get reportHint =>
+      'Ceritakan apa yang terjadi. Laporanmu bersifat pribadi dan tersedia untuk ditinjau oleh tim Jajan Gangs. Melapor tidak otomatis memblokir atau memberi sanksi kepada pengguna ini.';
+
+  @override
+  String get reportDetails => 'Apa yang terjadi? (opsional)';
+
+  @override
+  String get reportSubmit => 'Kirim laporan';
+
+  @override
+  String get reportSent => 'Laporanmu telah dikirim. Terima kasih.';
+
+  @override
+  String get reportReason_spam => 'Spam atau penipuan';
+
+  @override
+  String get reportReason_harassment => 'Pelecehan atau perundungan';
+
+  @override
+  String get reportReason_unsafe => 'Perilaku berbahaya';
+
+  @override
+  String get reportReason_other => 'Alasan lainnya';
+
+  @override
+  String get inviteFailed =>
+      'Undangan belum dapat dikonfirmasi. Periksa koneksimu lalu ketuk Undang untuk mencoba lagi.';
+
+  @override
+  String get profileTagline =>
+      'Petualangan kuliner berikutnya dimulai di sini.';
+
+  @override
+  String get passportEditorHint =>
+      'Kenangan kecil, rasa istimewa. Ceritakan versimu.';
+
+  @override
+  String get chatInboxHint => 'Gang kamu, makanan enak, dan obrolan seru.';
+
+  @override
+  String get chatDelete => 'Hapus dari chat saya';
+
+  @override
+  String get chatDeleteHint =>
+      'Chat disembunyikan untukmu sampai ada pesan baru. Kamu tetap menjadi anggota dan pesan semua orang tetap tersimpan.';
+
+  @override
+  String get chatDeleteFailed =>
+      'Chat tidak dapat disembunyikan. Periksa koneksi dan coba lagi.';
+
+  @override
+  String get chatHiddenEmpty =>
+      'Belum ada chat yang terlihat. Chat tersembunyi muncul kembali saat ada pesan baru.';
+
+  @override
+  String get bioLabel => 'Bio (opsional)';
+
+  @override
+  String get bioHint =>
+      'Ceritakan sedikit tentang dirimu dan makanan favoritmu…';
+
+  @override
+  String get bioLong => 'Bio maksimal 150 karakter.';
+
+  @override
+  String get profileEdit => 'Edit profil';
+
+  @override
+  String get profileSave => 'Simpan profil';
+
+  @override
+  String get pgTitle => 'Gang Saya';
+
+  @override
+  String get pgCreate => 'Buat Gang';
+
+  @override
+  String get pgTemporary => 'Chat Jajan';
+
+  @override
+  String get pgIntro => 'Temanmu. Petualangan kulinermu. Gang yang selalu ada.';
+
+  @override
+  String get pgName => 'Nama gang';
+
+  @override
+  String get pgManage => 'Kelola gang';
+
+  @override
+  String get pgInvalid =>
+      'Masukkan nama gang 1–40 karakter dan periksa isianmu.';
+
+  @override
+  String get pgError => 'Proses belum berhasil. Periksa koneksi dan coba lagi.';
+
+  @override
+  String get pgFull =>
+      'Gang ini penuh. Minta pemilik menambah batas anggotanya.';
+
+  @override
+  String get pgFriendsOnly =>
+      'Kamu harus masih berteman dengan pengundang, dan ia harus masih menjadi anggota gang.';
+
+  @override
+  String get pgUnavailable =>
+      'Gang tidak tersedia atau kamu bukan lagi anggotanya.';
+
+  @override
+  String get pgTransferFirst =>
+      'Alihkan kepemilikan ke anggota lain sebelum keluar.';
+
+  @override
+  String get pgCapacity =>
+      'Batas anggota tidak boleh kurang dari jumlah anggota saat ini.';
+
+  @override
+  String get pgEmpty =>
+      'Gang permanenmu akan muncul di sini. Buat gang dan undang temanmu!';
+
+  @override
+  String get pgInvite => 'Undangan gang';
+
+  @override
+  String get pgInviteHint =>
+      'Terima untuk bergabung dan mulai mengobrol. Undangan tertunda tidak memesan tempat.';
+
+  @override
+  String get pgInviteHandled =>
+      'Undangan ini sudah dijawab. Gang yang diterima ada di Gang Saya.';
+
+  @override
+  String get pgInviteNotification => 'Kamu diundang ke gang permanen.';
+
+  @override
+  String get pgMessageNotification => 'Pesan baru di gang permanenmu.';
+
+  @override
+  String get pgInviteFriendsHint =>
+      'Undang temanmu ke gang ini. Mereka dapat menerima atau menolak.';
+
+  @override
+  String get pgOwner => 'Pemilik';
+
+  @override
+  String get pgMembersTitle => 'Anggota & undangan';
+
+  @override
+  String get pgTransfer => 'Alihkan kepemilikan';
+
+  @override
+  String get pgRemove => 'Keluarkan anggota';
+
+  @override
+  String get pgMemberConfirm =>
+      'Ini mengubah peran atau akses anggota ke gang. Lanjutkan?';
+
+  @override
+  String get pgDelete => 'Hapus gang';
+
+  @override
+  String get pgDeleteHint =>
+      'Hapus gang, pesan, dan undangannya untuk semua anggota? Tindakan ini tidak dapat dibatalkan.';
+
+  @override
+  String get pgLeave => 'Keluar dari gang';
+
+  @override
+  String get pgLeaveHint =>
+      'Kamu akan kehilangan akses chat. Teman di gang harus mengundangmu lagi untuk bergabung kembali.';
+
+  @override
+  String get pgDeleteRetry => 'Selesaikan penghapusan gang';
+
+  @override
+  String get pgMessage => 'Tulis pesan…';
+
+  @override
+  String get pgSend => 'Kirim pesan';
+
+  @override
+  String get pgHiddenHint =>
+      'Gang tersembunyi muncul kembali saat ada pesan baru.';
+
+  @override
+  String pgMembers(int count, int limit) {
+    return '$count/$limit anggota';
+  }
+
+  @override
+  String get pgAlreadyMember => 'Sudah menjadi anggota';
+
+  @override
+  String get pgInvitedBy => 'Mengundangmu';
+
+  @override
+  String get avatarAnime01 => 'Petualang Mi';
+
+  @override
+  String get avatarAnime02 => 'Foodie Ceria';
+
+  @override
+  String get avatarAnime03 => 'Penjelajah Kafe';
+
+  @override
+  String get avatarAnime04 => 'Gamer Malam';
+
+  @override
+  String get avatarAnime05 => 'Pemburu Jajanan';
+
+  @override
+  String get avatarAnime06 => 'Teman Pedas';
+
+  @override
+  String get avatarAnime07 => 'Pengelana Akhir Pekan';
+
+  @override
+  String get avatarAnime08 => 'Pemburu Camilan Manis';
+
+  @override
+  String get avatarAnime09 => 'Jagoan Santai';
+
+  @override
+  String get avatarAnime10 => 'Foodie Emas';
+
+  @override
+  String get avatarPreviewTitle => 'Kenali karaktermu';
+
+  @override
+  String get avatarPreviewHint =>
+      'Sedikit gaya untuk petualangan kuliner berikutnya.';
+
+  @override
+  String get avatarUseCharacter => 'Pilih karakter ini';
+
+  @override
+  String get jajanWhen => 'Kapan kita Jajan?';
+
+  @override
+  String get jajanNow => 'Sekarang';
+
+  @override
+  String get jajanLater => 'Nanti';
+
+  @override
+  String get jajanChooseTime => 'Pilih tanggal & waktu';
+
+  @override
+  String get jajanScheduleHint =>
+      'Rencanakan 15 menit hingga 7 hari ke depan. Anggota bisa langsung bergabung dan mengobrol.';
+
+  @override
+  String get jajanScheduleInvalid =>
+      'Pilih waktu mulai minimal 15 menit dan maksimal 7 hari dari sekarang.';
+
+  @override
+  String get jajanScheduledLabel => 'Terjadwal';
+
+  @override
+  String jajanScheduledFor(String time) {
+    return 'Terjadwal · $time';
+  }
+
+  @override
+  String jajanExpiresOn(String time) {
+    return 'Kedaluwarsa $time';
+  }
 }
