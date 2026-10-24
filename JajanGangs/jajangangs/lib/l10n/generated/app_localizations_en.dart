@@ -314,7 +314,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapTokenMissing =>
-      'Provide a public Mapbox token using --dart-define-from-file=config/local.json.';
+      'The map configuration is unavailable. Please update the app or contact support.';
 
   @override
   String get startupError => 'Jajan Gangs could not start. Please try again.';
@@ -399,7 +399,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeMapSetup =>
-      'The map needs a Mapbox token. Start the app with --dart-define-from-file=config/local.json.';
+      'The map configuration is unavailable. Please update the app or contact support.';
 
   @override
   String get locationFinding => 'Finding your area…';

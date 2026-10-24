@@ -317,7 +317,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get mapTokenMissing =>
-      'Tambahkan token publik Mapbox melalui --dart-define-from-file=config/local.json.';
+      'Konfigurasi peta tidak tersedia. Silakan perbarui aplikasi atau hubungi dukungan.';
 
   @override
   String get startupError =>
@@ -403,7 +403,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get homeMapSetup =>
-      'Peta memerlukan token Mapbox. Jalankan aplikasi dengan --dart-define-from-file=config/local.json.';
+      'Konfigurasi peta tidak tersedia. Silakan perbarui aplikasi atau hubungi dukungan.';
 
   @override
   String get locationFinding => 'Mencari area kamu…';

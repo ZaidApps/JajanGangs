@@ -12,12 +12,12 @@ Development currently targets **Firebase Spark**. Follow [Spark setup](docs/spar
    - `android/app/google-services.json`
    - `ios/Runner/GoogleService-Info.plist`
    Both must use application ID `com.zaidjoapps.jajangangs`. The supplied files point to Firebase project `jajangangs`.
-4. Copy `config/local.example.json` to `config/local.json` and set `MAPBOX_ACCESS_TOKEN` to a public `pk.` token. The local configuration is already populated on the current workstation.
+4. The public Mapbox token is bundled in `lib/config/app_config.dart` for Android and iOS. No local configuration file or launch flag is required. An optional `MAPBOX_ACCESS_TOKEN` dart-define overrides this default.
 5. Run:
 
 ```sh
 flutter pub get
-flutter run --dart-define-from-file=config/local.json
+flutter run
 ```
 
 VS Code includes a launch configuration using this file. Do a full restart after changing build configuration.
@@ -25,7 +25,7 @@ VS Code includes a launch configuration using this file. Do a full restart after
 ```sh
 flutter analyze --no-pub
 flutter test --no-pub
-flutter build apk --debug --dart-define-from-file=config/local.json
+flutter build apk --debug
 ```
 
 iOS builds require macOS/Xcode and signing setup. The Firebase plist is included in Runner resources; the project retains Flutter's Swift Package Manager integration. iOS builds have not been verified from Windows.
@@ -87,7 +87,7 @@ The app always opens WelcomeView directly on Android, iOS and web. No Mapbox tok
 
 The full-screen city illustration is a bundled decorative asset, not a live map. Floating food markers are decorative and do not represent real events or a user's position. Branding and buttons remain Flutter widgets. The primary action reads "I'm Hungry! Let's Jajan!"; it and Log In show coming-soon feedback until the corresponding authentication pages are built. Motion respects the system's reduced-animation preference.
 
-Launch the welcome screen normally with `flutter run`. For future map/service entry points, use `flutter run --dart-define-from-file=config/local.json`. A full restart is required after changing build-time configuration.
+Launch the welcome screen normally with `flutter run`. The map uses the bundled public token on both Android and iOS. A full restart is required after changing build-time configuration.
 
 Artwork provenance and the exact generation prompt are recorded in assets/images/README.md.
 
@@ -103,7 +103,7 @@ Restart the app fully after this change because saved preferences add a native p
 
 Completed profiles now enter the native Home Map after sign-in. This phase uses a bundled teal/gold Mapbox style, custom demo food pins, an approximate-location area, event preview cards, and Create Jajan / Profile / Gang controls. Event data is local only; Create Jajan and Gang are placeholders. Profile includes sign-out. English and Indonesian are supported.
 
-Use `flutter run --dart-define-from-file=config/local.json` (or the existing VS Code local launch configuration). Fully restart for the added location plugin. See [Home Map details](docs/home-map.md) for privacy, fallbacks and scope. No tests, builds or device launches were run for this phase.
+Use `flutter run` (or the existing VS Code local launch configuration). Fully restart for the added location plugin. See [Home Map details](docs/home-map.md) for privacy, fallbacks and scope. No tests, builds or device launches were run for this phase.
 
 ## Registration avatars
 
@@ -114,3 +114,7 @@ Email and first-time Google registration now require one of ten cartoon characte
 The Home **Create Jajan** action now opens a craving/capacity form and saves an OPEN event in Firestore using only an approximate area. Events have a 45-minute lifetime derived from their server creation timestamp. The creator's saved events appear alongside labeled demos; public discovery and joins are still deferred.
 
 **Publish the updated `firestore.rules` and create the index in `firestore.indexes.json`.** See [Create Jajan setup and schema](docs/create-jajan.md). No tests, builds or real submissions were run.
+
+### Default mobile Mapbox configuration
+
+The public token is compiled from `lib/config/app_config.dart` by default, including when launching through Android Studio or Xcode on a Mac. Copy the updated source to the Mac and rebuild the iOS app. `config/local.json` is optional and remains ignored by Git. To override the default, pass `--dart-define-from-file=config/local.json`. Token changes require a full rebuild. Only public `pk.` tokens belong in this client configuration.

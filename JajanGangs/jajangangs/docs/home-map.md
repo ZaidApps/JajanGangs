@@ -7,7 +7,7 @@ After authentication and a saved name profile, AuthGate opens MapView. Returning
 Fully restart the native app after adding the location plugin:
 
 ```sh
-flutter run --dart-define-from-file=config/local.json
+flutter run
 ```
 
 The existing VS Code `Jajan Gangs (local)` launch configuration supplies this file. A valid public MAPBOX_ACCESS_TOKEN is required. Missing configuration produces an explanatory screen; web and desktop show the mobile-platform requirement instead of constructing a native map.
@@ -32,3 +32,5 @@ Denied permissions, disabled services, timeout, or unavailable location use a cl
 ## Scope and verification
 
 No Firestore event reads/writes/listeners, join requests, place search, or live tracking are implemented. Existing authentication/profile reads remain unchanged. No tests, analyzer, app builds, or device launches were run for this phase, per the user's preference. Localization generation and Dart formatting are build preparation only.
+
+The default public Mapbox token is bundled in `lib/config/app_config.dart` for Android and iOS. `config/local.json` and dart-define flags are optional overrides, not prerequisites. Copy updated sources to the Mac and rebuild iOS to include this default.

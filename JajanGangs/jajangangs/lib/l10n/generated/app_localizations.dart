@@ -647,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapTokenMissing.
   ///
   /// In en, this message translates to:
-  /// **'Provide a public Mapbox token using --dart-define-from-file=config/local.json.'**
+  /// **'The map configuration is unavailable. Please update the app or contact support.'**
   String get mapTokenMissing;
 
   /// No description provided for @startupError.
@@ -791,7 +791,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeMapSetup.
   ///
   /// In en, this message translates to:
-  /// **'The map needs a Mapbox token. Start the app with --dart-define-from-file=config/local.json.'**
+  /// **'The map configuration is unavailable. Please update the app or contact support.'**
   String get homeMapSetup;
 
   /// No description provided for @locationFinding.
